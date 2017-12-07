@@ -21,7 +21,7 @@
     <main>
 
         <div class="box card">
-            <h3 style="text-align:center">Pre MWIT 2018 Log In</h3>
+            <h3 style="text-align:center">Log In</h3>
             <br>
             <form>
 
@@ -34,7 +34,7 @@
                     <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Log In</button>
+                <button type="submit" class="btn btn-primary" style="width:100%">Log In</button>
             </form>
         </div>
 
