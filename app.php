@@ -32,11 +32,15 @@
             height: 100%;
             background-color: gray;
         }
+
+        body{
+            padding: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <div class="box">
+    
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home"
@@ -93,7 +97,7 @@
             </div>
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
         </div>
-    </div>
+    
 </body>
 <footer class="feet">
 <?php echo "php is working. (c) Pre MWITS 2018 Dev Team " ?>
