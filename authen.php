@@ -2,14 +2,9 @@
 require_once "dbhelper.php";
 $user = $_POST['username'];
 $pass = $_POST['password'];
-if(strlen($user) < 4){
-	
-}else if(strlen($pass) < 4){
-
-}
+$conn = connect_db();
 $user = md5($user);
 $pass = md5($pass);
-$conn = connect_db();
 if(!$conn){
 	echo "<p> Connection Error </p>";
 	close_db($conn);
