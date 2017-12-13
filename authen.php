@@ -8,14 +8,14 @@ if(!$conn){
 	close_db($conn);
 	die();
 }
-$getuser = $conn->prepare("SELECT * FROM users WHERE username = ?");
+$getuser = $conn->prepare("SELECT * FROM users WHERE user = ?");
 $getuser->bind_param('s',$user);
 $getuser->execute();
 $userdata = $getuser->get_result();
 $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
 
-if (password_verify($password, $row['password'])) {
-	setcookie("id",$row['username'],time()+10800);
+if (password_verify($password, $row['pass'])) {
+	setcookie("id",$row['user'],time()+10800);
     echo 'Success redirecting ...';
     header('Location: app.php');
     exit();
