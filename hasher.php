@@ -1,4 +1,5 @@
 <html>
+<body>
 <?php
   $ms = connect_db();
   $res = $ms->query("SELECT password FROM user WHERE 1");
@@ -6,4 +7,5 @@
     echo "<p>".pasword_hash($row['pass'])."</p>";
   }
 ?>
+</body>
 </html>
