@@ -1,21 +1,21 @@
 <?php
-session_start();
+//session_start();
 
-
-if(isset($_SESSION['id'])){
+if(isset($_COOKIE['id'])){
+//if(isset($_SESSION['id'])){
     require_once "dbhelper.php";
     $conn = connect_db();
     if(!$conn){
         echo "<p> Connection Error </p>";
         close_db($conn);
         die();
-    }    
+    }
     $getdata = $conn->prepare("SELECT * FROM users WHERE username = ?");
     $getdata->bind_param('s',$_SESSION['id']);
     $getdata->execute();
     $userdata = $getdata->get_result();
     $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
-    $group = $row["group"];
+    $group = $row["groupnum"];
 }
 else{
     header('Location: index.php');
@@ -64,7 +64,7 @@ $name = $_SESSION['id'];
 </head>
 
 <body>
-    
+
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home"
@@ -88,32 +88,32 @@ $name = $_SESSION['id'];
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" style="max-height: 450px; overflow: auto;">
                 <div class="inventory">
                     <div class="slot">
-                        <div class="item"></div>    
-                    </div>                                           
+                        <div class="item"></div>
+                    </div>
                     <div class="slot">
-                        <div class="item"></div>        
-                    </div>                                           
+                        <div class="item"></div>
+                    </div>
                     <div class="slot">
-                        <div class="item"></div>        
-                    </div>                                           
+                        <div class="item"></div>
+                    </div>
                     <div class="slot">
-                        <div class="item"></div>        
-                    </div>                                           
+                        <div class="item"></div>
+                    </div>
                     <div class="slot">
-                        <div class="item"></div>        
-                    </div>              
+                        <div class="item"></div>
+                    </div>
                     <div class="slot">
-                        <div class="item"></div>        
-                    </div>                                                      
+                        <div class="item"></div>
+                    </div>
                     <div class="slot">
-                        <div class="item"></div>        
-                    </div>   
+                        <div class="item"></div>
+                    </div>
                     <div class="slot">
-                        <div class="item"></div>        
-                    </div>   
+                        <div class="item"></div>
+                    </div>
                     <div class="slot">
-                        <div class="item"></div>        
-                    </div>                                           
+                        <div class="item"></div>
+                    </div>
                 </div>
 
 
@@ -121,7 +121,7 @@ $name = $_SESSION['id'];
             </div>
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
         </div>
-    
+
 </body>
 <footer class="feet">
 <?php echo "php is working. (c) Pre MWITS 2018 Dev Team " ?>

@@ -1,6 +1,10 @@
 <!doctype html>
 <html>
-
+<?php
+  if(isset($_COOKIE['id'])){
+    header("Location: app.php");
+  }
+?>
 <head>
     <meta charset="UTF-8">
     <title>Pre MWIT 2018 | Log In</title>
