@@ -8,7 +8,7 @@ if(!$conn){
 	close_db($conn);
 	die();
 }
-$getuser = $conn->prepare("SELECT * FROM users WHERE user = ?");
+$getuser = $conn->prepare("SELECT * FROM user WHERE user = ?");
 $getuser->bind_param('s',$user);
 $getuser->execute();
 $userdata = $getuser->get_result();
