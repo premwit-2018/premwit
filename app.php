@@ -1,8 +1,5 @@
 <?php
-//session_start();
-
 if(isset($_COOKIE['id'])){
-//if(isset($_SESSION['id'])){
     require_once "dbhelper.php";
     $conn = connect_db();
     if(!$conn){
@@ -11,16 +8,16 @@ if(isset($_COOKIE['id'])){
         die();
     }
     $getdata = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $getdata->bind_param('s',$_SESSION['id']);
+    $getdata->bind_param('s',$_COOKIE['id']);
     $getdata->execute();
     $userdata = $getdata->get_result();
     $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
-    $group = $row["groupnum"];
+    $group = $row["group"];
 }
 else{
     header('Location: index.php');
 }
-$name = $_SESSION['id'];
+$name = $_COOKIE['id'];
 ?>
 
 <!doctype html>

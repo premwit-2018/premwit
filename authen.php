@@ -15,9 +15,7 @@ $userdata = $getuser->get_result();
 $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
 
 if (password_verify($password, $row['password'])) {
-    //session_start();
-		setcookie("id",md5($row['username']),time()+10800);
-    //$_SESSION["id"] = $row['username'];
+	setcookie("id",$row['username'],time()+10800);
     echo 'Success redirecting ...';
     header('Location: app.php');
     exit();
