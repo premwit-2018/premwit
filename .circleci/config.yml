@@ -24,8 +24,8 @@ jobs:
             yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
             yum install -y http://rpms.remirepo.net/enterprise/remi-release-6.rpm
             yum install -y yum-utils
-            yum-config-manager --enable remi-php72
-            yum install -y php php-curl php-xml php-ldap php-cli php-common php-mysql php-mcrypt php-gd php-zip php-fileinfo php-json --skip-broken
+            yum-config-manager --enable remi-php70
+            yum install -y php php-curl php-xml php-ldap php-cli php-common php-mysql php-mcrypt php-gd php-zip php-fileinfo php-json
       - run:
           name: Check PHP version
           command: php -v
