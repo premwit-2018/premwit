@@ -33,7 +33,7 @@
 						
 				USAGE :
 				
-					update_data("Boss_Process",fetch_data()["Boss_Process"]+500);
+					update_data("boss_process",fetch_data()["boss_process"]+500);
 						
 				
 	
@@ -176,8 +176,8 @@
 	{
 		$database = db_connect();
 		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc())
-		$stunexp = $data['Stun_Expire'];
-		$stunned = $data['Boss_Stun'];
+		$stunexp = $data['stun_expire'];
+		$stunned = $data['boss_stun'];
 		if($stunned)
 		{
 			if(time() >= $stunexp)
@@ -190,10 +190,10 @@
 				else
 					$dd = damage_boss_attack_p2($t,$h,$ex,$a,$attr);
 				
-			$cdd = $data['Boss_Process'];
+			$cdd = $data['boss_process'];
 			$cdd += $dd;
 			
-			$database->query("UPDATE `Game_Data` SET `Boss_Process` = $cdd WHERE 1;");	
+			$database->query("UPDATE `Game_Data` SET `boss_process` = $cdd WHERE 1;");	
 		}
 		close_db($database);
 		return NULL;
@@ -222,10 +222,10 @@
 		{
 			$dd = damage_student_attack($t,$h,$ex,$a,$attr);
 				
-			$cdd = $data['Student_Process'];
+			$cdd = $data['student_process'];
 			$cdd += $dd;
 			
-			$database->query("UPDATE `Game_Data` SET `Student_Process` = $cdd WHERE 1;");	
+			$database->query("UPDATE `Game_Data` SET `student_process` = $cdd WHERE 1;");	
 		}
 		close_db($database);
 		return NULL;
@@ -238,9 +238,9 @@
 	function item_modify_boss_extra($amount)
 	{
 		$database = db_connect();
-		$old = (($database->query("SELECT `Extra_Boss` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['Extra_Boss'];
+		$old = (($database->query("SELECT `extra_boss` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['extra_boss'];
 		$old*=$amount;
-		$database->query("UPDATE `Game_Data` SET `Extra_Boss` = $old WHERE 1;");
+		$database->query("UPDATE `Game_Data` SET `extra_boss` = $old WHERE 1;");
 		close_db($database);
 		return NULL;
 		
@@ -251,9 +251,9 @@
 	function item_modify_boss_amp($amount)
 	{
 		$database = db_conect();
-		$old = (($database->query("SELECT `Amp_Boss` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['Extra_Boss'];
+		$old = (($database->query("SELECT `amp_boss` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['extra_boss'];
 		$old*=$amount;
-		$database->query("UPDATE `Game_Data` SET `Amp_Boss` = $old WHERE 1;");
+		$database->query("UPDATE `Game_Data` SET `amp_boss` = $old WHERE 1;");
 		close_db($database);
 		return NULL;
 	}
@@ -263,18 +263,18 @@
 	function item_modify_student_extra($amount)
 	{
 		$database = db_conect();
-		$old = (($database->query("SELECT `Extra_Student` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['Extra_Boss'];
+		$old = (($database->query("SELECT `extra_student` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['extra_boss'];
 		$old*=$amount;
-		$database->query("UPDATE `Game_Data` SET `Extra_Student` = $old WHERE 1;");
+		$database->query("UPDATE `Game_Data` SET `extra_student` = $old WHERE 1;");
 		close_db($database);
 		return NULL;
 	}
 	function item_modify_student_amp($amount)
 	{
 		$database = db_conect();
-		$old = (($database->query("SELECT `Amp_Student` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['Extra_Boss'];
+		$old = (($database->query("SELECT `amp_student` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['extra_boss'];
 		$old*=$amount;
-		$database->query("UPDATE `Game_Data` SET `Amp_Student` = $old WHERE 1;");
+		$database->query("UPDATE `Game_Data` SET `amp_student` = $old WHERE 1;");
 		close_db($database);
 		return NULL;
 	}
@@ -285,8 +285,8 @@
 	{
 		$database = db_conect();
 		$stexp = time()+$duration;
-		$database->query("UPDATE `Game_Data` SET `Stun_Expire` = $stexp WHERE 1;");
-		$database->query("UPDATE `Game_Data` SET `Boss_Stun` = 1 WHERE 1;");
+		$database->query("UPDATE `Game_Data` SET `stun_expire` = $stexp WHERE 1;");
+		$database->query("UPDATE `Game_Data` SET `boss_stun` = 1 WHERE 1;");
 		close_db($database);
 		return NULL;
 	}
