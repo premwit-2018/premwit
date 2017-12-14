@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/premwit
     docker:
-      - image: centos:centos7
+      - image: centos:centos6.9
     steps:
       - checkout
       - run:
@@ -20,7 +20,12 @@ jobs:
           command: yum install -y uglifyjs zip unzip git epel-release wget tar gcc gcc+ make nodejs
       - run:
           name: Install PHP 
-          command: yum install -y php php-curl php-xml php-ldap php-cli php-common php-mysql
+          command: |
+            yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+            yum install -y http://rpms.remirepo.net/enterprise/remi-release-6.rpm
+            yum install -y yum-utils
+            yum-config-manager --enable remi-php72
+            yum install -y php php-curl php-xml php-ldap php-cli php-common php-mysql php-mcrypt php-gd php-zip php-fileinfo
       - run:
           name: Check PHP version
           command: php -v
