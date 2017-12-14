@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/premwit
     docker:
-      - image: centos:centos6.9
+      - image: centos:centos7
     steps:
       - checkout
       - run:
