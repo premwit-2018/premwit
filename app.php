@@ -105,20 +105,20 @@ $name = $_SESSION['id'];
                         <div class="tab-pane fade" id="list-4" role="tabpanel" aria-labelledby="list-4-list">omg</div>
                         </div>
                     </div>
-                    </div>                          
+                    </div>
                 </div>
 
 
 
             </div>
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-            
+
         </div>
 
 </body>
 <script>
 $('.logout').click(function() {
-    Cookies.remove('id');
+    sessionStorage.removeItem('id');
     window.location.href = 'index.php';
 });
 
