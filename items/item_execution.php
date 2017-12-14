@@ -10,7 +10,7 @@
 	
 		_fetch_data()
 		
-			FETCH DATA :
+			FETCH_DATA :
 				
 				DESCRIPTION :
 				
@@ -19,6 +19,22 @@
 				USAGE :
 				
 					$datamap = fetch_data()
+					
+		_update_data()
+		
+			UPDATE_DATA :
+			
+				DESCRIPTION :
+				
+					A function that takes two arguments :
+					
+						1 - $dataname :	TYPE : STRING : Indicates the name of data you are changing
+						2 - $value	  : TYPE : WHATEVER : Contains the data you are using to replace
+						
+				USAGE :
+				
+					update_data("Boss_Process",fetch_data()["Boss_Process"]+500);
+						
 				
 	
 	
