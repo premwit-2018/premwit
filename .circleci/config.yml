@@ -25,7 +25,7 @@ jobs:
             yum install -y http://rpms.remirepo.net/enterprise/remi-release-6.rpm
             yum install -y yum-utils
             yum-config-manager --enable remi-php72
-            yum install -y php php-curl php-xml php-ldap php-cli php-common php-mysql php-mcrypt php-gd php-zip php-fileinfo
+            yum install -y php php-curl php-xml php-ldap php-cli php-common php-mysql php-mcrypt php-gd php-zip php-fileinfo php-json --skip-broken
       - run:
           name: Check PHP version
           command: php -v
