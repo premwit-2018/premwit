@@ -7,7 +7,7 @@ if(isset($_COOKIE['id'])){
         close_db($conn);
         die();
     }
-    $getdata = $conn->prepare("SELECT * FROM user WHERE username = ?");
+    $getdata = $conn->prepare("SELECT * FROM user WHERE user = ?");
     $getdata->bind_param('s',$_COOKIE['id']);
     $getdata->execute();
     $userdata = $getdata->get_result();
