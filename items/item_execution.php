@@ -4,7 +4,7 @@
 	
 	// To search a help for functions , search for _FUNCTIONNAME for example : " _damage_student_attack "
 	
-	'''
+	/*
 	
 	MISC COMMAND :
 	
@@ -104,7 +104,7 @@
 	
 		
 	
-	'''
+	*/
 	
 	
 	#define constants related to game here	
