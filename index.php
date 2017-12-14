@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
 <?php
-  if(isset($_COOKIE['id'])){
+  session_start();
+  if(isset($_SESSION['id'])){
     header("Location: app.php");
   }
 ?>
