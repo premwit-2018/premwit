@@ -17,7 +17,7 @@ jobs:
           command: yum install -y ca-certificates curl sudo
       - run:
           name: Install Required complier
-          command: yum install -y uglifyjs zip unzip git epel-release wget tar gcc gcc+ make nodejs
+          command: yum install -y uglifyjs zip unzip git wget tar gcc gcc+ make nodejs
       - run:
           name: Install PHP 
           command: |
