@@ -2,7 +2,7 @@
 	
 	// Following is the description and instruction for the functions implemented inside this module.
 	
-	// To search a help for functions , search for _FUNCTIONNAME for example : " _damage_student_attack "
+	// To search a help for functions , search for _FUNCTIONNAME for example : " _damage_student_attack " to look up instructions for damage_student_attack function.
 	
 	/*
 	
@@ -18,7 +18,8 @@
 				
 				USAGE :
 				
-					$datamap = fetch_data()
+					$datamap = fetch_data(); 
+						>> $datamap now contains all data from Game_Data, stored as associative array
 					
 		_update_data()
 		
@@ -33,7 +34,8 @@
 						
 				USAGE :
 				
-					update_data("boss_process",fetch_data()["boss_process"]+500);
+					update_data("boss_process",fetch_data()["boss_process"]+500); 
+						>> increment boss's process in Game_Data by 500
 						
 				
 	
@@ -51,13 +53,17 @@
 						1 - $t 		TYPE : INT	: indicates time AFTER modifiers
 						2 - $h 		TYPE : INT	: indicates boss health ( % boss_dmg / boss_dmg + student_dmg )
 						3 - $ex 	TYPE : INT	: indicates extra boss damage
-						4 - $attr	TYPE : INT	: indicates attack rate, or damage update rate
+						4 - $a		TYPE : INT	: indicates damage amplifier
+						5 - $attr	TYPE : INT	: indicates attack rate, or damage update rate
 						
 					And returns the damage dealt in such time period as an integer. Used in phase 1. But can be called in a more simple way.
 					
 				USAGE :
 				
-					$damagedealt = damage_boss_attack_p1(gettime(),$health,$extra,$0.1);
+					$damagedealt = damage_boss_attack_p1(gettime(),$health,$extra,0.1); 
+					
+						>> $damagedealt stores damage dealt by the boss at time of gettime() (arbitary function, not a real one(?)) with health of $health 
+						   and extra damage of $extra, attacking at the rate of 0.1 seconds during phase 1.
 					
 		_damage_boss_attack_p2()
 		
@@ -70,7 +76,8 @@
 						1 - $t 		TYPE : INT	: indicates time AFTER modifiers
 						2 - $h 		TYPE : INT	: indicates boss health ( % boss_dmg / boss_dmg + student_dmg )
 						3 - $ex 	TYPE : INT	: indicates extra boss damage
-						4 - $attr	TYPE : INT	: indicates attack rate, or damage update rate
+						4 - $a		TYPE : INT	: indicates damage amplifier
+						5 - $attr	TYPE : INT	: indicates attack rate, or damage update rate
 						
 					And returns the damage dealt in such time period as an integer. Used in phase 2. But can be called in a more simple way.
 					
@@ -78,27 +85,144 @@
 				
 					$damagedealt = damage_boss_attack_p1(gettime(),$health,$extra,$0.1);
 					
+						>> $damagedealt stores damage dealt by the boss at time of gettime() (arbitary function, not a real one(?)) with health of $health 
+						   and extra damage of $extra, attacking at the rate of 0.1 seconds during phase 2.
+					
 		_execute_boss_attack()
 		
-			EXECUTE_BOSS:
+			EXECUTE_BOSS_ATTACK:
 			
 				DESCRIPTION:
 				
 					A function that takes the following arguments:
+						
+						1 - $phase	TYPE : INT	: indicates boss's phase
+						2 - $t 		TYPE : INT	: indicates time AFTER modifiers
+						3 - $h 		TYPE : INT	: indicates boss health ( % boss_dmg / boss_dmg + student_dmg )
+						4 - $ex 	TYPE : INT	: indicates extra boss damage
+						5 - $a		TYPE : INT	: indicates damage amplifier
+						6 - $attr	TYPE : INT	: indicates attack rate, or damage update rate
 					
-						1 - $t 		TYPE : INT	: indicates time AFTER modifiers
-						2 - $h 		TYPE : INT	: indicates boss health ( % boss_dmg / boss_dmg + student_dmg )
-						3 - $ex 	TYPE : INT	: indicates extra boss damage
-						4 - $attr	TYPE : INT	: indicates attack rate, or damage update rate
-					
-					And executes the boss attack without any return values
+					And executes the boss attack without any return values by directly modifying the boss's progress.
 					
 				USAGE:
 					
 					if($currenttime - $lastattack > 0.1)
 						execute_boss_attack(gettime(),$health,$extra,$currenttime - $lastattack);
 					
+						>> Execute boss attack which the following arguments after every 0.1 seconds.
+	
+	STUDENTS RELATED:
+	
+		_damage_student_attack
 			
+			DAMAGE_STUDENT_ATTACK:
+				
+				DESCRIPTION:
+				
+					A function that takes the following arguments:
+					
+						1 - $t 		TYPE : INT	: indicates time AFTER modifiers
+						2 - $ex 	TYPE : INT	: indicates extra boss damage
+						3 - $a		TYPE : INT	: indicates damage amplifier
+						4 - $attr	TYPE : INT	: indicates attack rate, or damage update rate
+					
+					And returns the amount of damage dealt with the arguments it received.
+					
+				USAGE:
+				
+					$dd = damage_student_attack(500,25,1.05,0.1);
+					
+						>> $dd stores the damage dealt affter 5 seconds into the game, with 25 extra damage, x1.05 amplifier when attacking at every 0.1 seconds
+						
+		_execute_student_attack
+		
+			EXECUTE_STUDENT_ATTACK:
+			
+				DESCRIPTION:
+						
+					A function that takes the following arguments:
+					
+						1 - $t 		TYPE : INT	: indicates time AFTER modifiers
+						2 - $ex 	TYPE : INT	: indicates extra boss damage
+						3 - $a		TYPE : INT	: indicates damage amplifier
+						4 - $attr	TYPE : INT	: indicates attack rate, or damage update rate
+						
+					And executes students' attack without any return values by directly modifying the students' progress.
+					
+				USAGE:
+				
+					function item_instant_damage($hits):
+					{
+						for($i=0;$i<hits;$i++)
+						{
+							execute_student_attack(...);
+						}
+						return NULL;
+					}
+					
+						>> this test function instantly deals the damage for $hits amount of times.
+						
+	ITEM RELATED:
+	
+		_item_modify_boss_amp and _item_modify_boss_amp
+		
+		
+			ITEM_MODIFY_BOSS_AMP and ITEM_MODIFY_STUDENT_AMP:
+				
+				DESCRIPTION:
+				
+					These functions takes only one argument:
+					
+						1 - $amount		TYPE: DECIMALS : indicates the multiplier applied
+						
+					And multiply the current amplifier of boss and students respectively.
+				
+				USAGE:
+				
+					item_modify_boss_amp(0.95);
+					
+						>> reduces boss damage by 5%
+						
+		_item_modify_boss_extra and _item_modify_student_extra
+			
+			ITEM_MODIFY_BOSS_EXTRA and ITEM_MODIFY_STUDENT_EXTRA:
+				
+				DESCRIPTION:
+				
+					These functions takes only one argument:
+					
+						1 - $amount		TYPE: INT : indicates the amount of damage change.
+						
+					And increments the current damage stat of boss and students respectively.
+				
+				USAGE:
+				
+					item_modify_boss_extra(-10);
+					
+						>> reduces boss damage stat by 10
+						
+		_item_effect_boss_stun:
+		
+			ITEM_EFFECT_BOSS_STUN:
+			
+				DESCRIPTION:
+				
+					AA function that takes only one argument:
+					
+						1 - $duration	TYPE: INT : indicates the stun duration.
+						
+					And stuns the boss for that amount of seconds without return value.
+					
+				USAGE:
+				
+					item_effect_boss_stun(15);
+					
+						>> stuns boss for 15 seconds.
+			
+			
+		
+		
 			
 			
 	
@@ -215,14 +339,14 @@
 		return $coeff*$dmg*$a*$attr;
 	}
 	
-	function execute_student_attack($t,$h,$ex,$a,$attr)
+	function execute_student_attack($t,$ex,$a,$attr)
 	{
 		$database = db_connect();
 		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc())
 	
 		if(True) #Ctrl C & Ctrl V is awesome
 		{
-			$dd = damage_student_attack($t,$h,$ex,$a,$attr);
+			$dd = damage_student_attack($t,$ex,$a,$attr);
 				
 			$cdd = $data['student_process'];
 			$cdd += $dd;
@@ -241,7 +365,7 @@
 	{
 		$database = db_connect();
 		$old = (($database->query("SELECT `extra_boss` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['extra_boss'];
-		$old*=$amount;
+		$old+=$amount;
 		$database->query("UPDATE `Game_Data` SET `extra_boss` = $old WHERE 1;");
 		close_db($database);
 		return NULL;
@@ -266,7 +390,7 @@
 	{
 		$database = db_conect();
 		$old = (($database->query("SELECT `extra_student` FROM `Game_Data` WHERE 1;"))->fetch_assoc())['extra_boss'];
-		$old*=$amount;
+		$old+=$amount;
 		$database->query("UPDATE `Game_Data` SET `extra_student` = $old WHERE 1;");
 		close_db($database);
 		return NULL;
