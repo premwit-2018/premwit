@@ -115,7 +115,9 @@
 	function fetch_data()
 	{
 		$dt = db_connect();
-		$res = $dt->query("SELECT * FROM `Game_Data` WHERE 1;") or return NULL;
+		$res = $dt->query("SELECT * FROM `Game_Data` WHERE 1;");
+		if(!$res)
+			return NULL;
 		$row = $res->fetch_assoc();
 		if($res->fetch_assoc()){
 			$dt->close();
