@@ -301,7 +301,7 @@
 	function execute_boss_attack($phase,$t,$h,$ex,$a,$attr)
 	{
 		$database = db_connect();
-		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc())
+		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc());
 		$stunexp = $data['stun_expire'];
 		$stunned = $data['boss_stun'];
 		if($stunned)
@@ -342,7 +342,7 @@
 	function execute_student_attack($t,$ex,$a,$attr)
 	{
 		$database = db_connect();
-		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc())
+		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc());
 	
 		if(True) #Ctrl C & Ctrl V is awesome
 		{
