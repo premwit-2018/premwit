@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			canvas 
+			{
+				border:1px solid #d3d3d3;
+				background-color: #42ff64;
+			}
+		</style>
+	</head>
+	
+	<body onload="">
+		<script>
+		
+			var wingoal = 10000;
+			var dmgdiff = 0;
+			
+			var stun = 0;
+			var hitrate = 0.1;
+			var sdps = 150;
+			var bdps = 400;
+		
+			var healthbar = {
+				canvas : document.createElement("canvas"),
+				start : function() {
+					this.canvas.width = 480;
+					this.canvas.height = 50;
+					this.context = this.canvas.getContext("2d");
+					document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+					bosshp = new component(1480,50,"red",-1240,0);
+				}
+				
+			}
+			
+			healthbar.start();
+			
+			function component(width, height, color, x, y, type) 
+			{
+				this.type = type;
+				this.score = 0;
+				this.width = width;
+				this.height = height;
+				this.speedX = 0;
+				this.speedY = 0;    
+				this.x = x;
+				this.y = y;
+				this.update = function() {
+					ctx = healthbar.context;
+					if (this.type == "text") {
+						ctx.font = this.width + " " + this.height;
+						ctx.fillStyle = color;
+						ctx.fillText(this.text, this.x, this.y);
+					} else {
+						this.x = gethpx();
+						ctx.fillStyle = "#42ff64";
+						ctx.fillRect(0,0,480,50);
+						ctx.fillStyle = color;
+						ctx.fillRect(this.x, this.y, this.width, this.height);
+					}
+    
+				}
+			}
+			
+			bosshp.update();
+			
+			function studentatk()
+			{
+				damage = bdps*hitrate;
+				if(stun==0){
+					dmgdiff += damage;
+					bosshp.update();
+					console.log("W="+bosshp.width);
+					console.log("L="+bosshp.height);
+					console.log(bosshp.x);
+				}
+				
+			}
+			
+			
+			function bossatk()
+			{
+				
+				damage = sdps*hitrate;
+				dmgdiff -= damage;
+				bosshp.update();
+				console.log(bosshp.x);
+			}
+			
+			function studentdmg(damage)
+			{
+				dmgdiff += damage;
+				bosshp.update();
+				console.log(bosshp.x);
+			}
+			
+			function bossdmg(damage)
+			{
+				dmgdiff -= damage;
+				bosshp.update();
+				console.log(bosshp.x);
+			}
+			
+			function gethpx()
+			{
+				var x = 480*(dmgdiff+wingoal)/(wingoal*2);
+				return x-1480;
+			}
+			
+			function stun_boss(seconds)
+			{
+				stun = seconds;
+				stundur = setInterval(function(){stun_countdown();},1000);
+				
+			}
+			
+			function stun_countdown()
+			{
+				stun-=1;
+				if(stun==0)
+				{
+					clearInterval(stundur);;
+				}
+			}
+			
+			function multiply_dps(amount)
+			{
+				sdps*=amount;
+			}
+			
+			var burst_hitcount = 0;
+			function deal_burst_damage(__damage,__hit,__interval)
+			{
+				__interval *= 1000;
+				burst_hitcount = __hit;
+				__burstevent = setInterval(function(){ burst_hit(__damage);},__interval);
+				
+				
+			}
+			
+			function burst_hit(damage)
+			{
+				burst_hitcount -= 1;
+				dmgdiff -= damage;
+				bosshp.update();
+				console.log(bosshp.x);
+				if(burst_hitcount == 0)
+				{
+					clearInterval(__burstevent);
+				}
+			}1
+			
+			
+			setInterval(function(){ bossatk(); }, 100);
+			setInterval(function(){ studentatk(); }, 100);
+			
+		
+		</script>
+		
+		<h2>FOR DEBUGGING</h2>
+		</br>
+		<button onclick="studentdmg(1000)">DAMAGE TO STUDENTS 1000</button>
+		<button onclick="bossdmg(1000)">DAMAGE TO BOSS 1000</button>
+		
+		</br>
+		<button onclick="studentdmg(5000)">DAMAGE TO STUDENTS 5000</button>
+		<button onclick="bossdmg(5000)">DAMAGE TO BOSS 5000</button>
+		<h2>USE ITEMS</h2>
+		</br>
+		<button onclick="stun_boss(5)">STUN BOSS FOR 5 SECONDS</button>
+		<button onclick="multiply_dps(1.05)">INCREASE DPS BY 5%</button>
+		<button onclick="deal_burst_damage(sdps*3,5,0.2)">DEAL 5 HITS OF INSTANT DAMAGE</button>
+	</body>
+	
+	
+</html>
