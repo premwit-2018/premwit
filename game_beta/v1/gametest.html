@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			canvas 
+			{
+				border:1px solid #d3d3d3;
+				background-color: #42ff64;
+			}
+		</style>
+	</head>
+	
+	<body onload="">
+		<script>
+		
+			var wingoal = 1000;
+			var dmgdiff = 0;
+		
+			var healthbar = {
+				canvas : document.createElement("canvas"),
+				start : function() {
+					this.canvas.width = 480;
+					this.canvas.height = 50;
+					this.context = this.canvas.getContext("2d");
+					document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+					bosshp = new component(480,50,"red",-240,0);
+				}
+				
+			}
+			
+			healthbar.start();
+			
+			function component(width, height, color, x, y, type) 
+			{
+				this.type = type;
+				this.score = 0;
+				this.width = 480;
+				this.height = 50;
+				this.speedX = 0;
+				this.speedY = 0;    
+				this.x = x;
+				this.y = y;
+				this.update = function() {
+					ctx = healthbar.context;
+					if (this.type == "text") {
+						ctx.font = this.width + " " + this.height;
+						ctx.fillStyle = color;
+						ctx.fillText(this.text, this.x, this.y);
+					} else {
+						this.x = gethpx();
+						ctx.fillStyle = "#42ff64";
+						ctx.fillRect(0,0,480,50);
+						ctx.fillStyle = color;
+						ctx.fillRect(this.x, this.y, this.width, this.height);
+					}
+    
+				}
+			}
+			
+			bosshp.update();
+			
+			function bossdmg(damage)
+			{
+				dmgdiff -= damage;
+				bosshp.update();
+				console.log(bosshp.x);
+			}
+			
+			function studentdmg(damage)
+			{
+				dmgdiff += damage;
+				bosshp.update();
+				console.log(bosshp.x);
+			}
+			
+			function gethpx()
+			{
+				var x = 480*(dmgdiff+wingoal)/(wingoal*2);
+				return x-480;
+			}
+			
+		
+		</script>
+		</br>
+		<button onclick="bossdmg(10)">DAMAGE BOSS 10</button>
+		<button onclick="studentdmg(10)">DAMAGE STUDENTS 10</button>
+		
+		</br>
+		<button onclick="bossdmg(50)">DAMAGE BOSS 50</button>
+		<button onclick="studentdmg(50)">DAMAGE STUDENTS 50</button>
+	</body>
+	
+	
+</html>
