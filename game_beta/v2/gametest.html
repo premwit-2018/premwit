@@ -82,7 +82,7 @@
 			{
 				
 				damage = sdps*hitrate;
-				dmgdiff -= damage;
+				dmgdiff -= (damage*boost_power);
 				bosshp.update();
 				console.log(bosshp.x);
 			}
@@ -96,7 +96,7 @@
 			
 			function bossdmg(damage)
 			{
-				dmgdiff -= damage;
+				dmgdiff -= (damage*boost_power);
 				bosshp.update();
 				console.log(bosshp.x);
 			}
@@ -131,6 +131,8 @@
 			var burst_hitcount = 0;
 			function deal_burst_damage(__damage,__hit,__interval)
 			{
+				if(burst_hitcount != 0)
+					return;
 				__interval *= 1000;
 				burst_hitcount = __hit;
 				__burstevent = setInterval(function(){ burst_hit(__damage);},__interval);
@@ -141,19 +143,43 @@
 			function burst_hit(damage)
 			{
 				burst_hitcount -= 1;
-				dmgdiff -= damage;
+				dmgdiff -= (damage*boost_power);
 				bosshp.update();
 				console.log(bosshp.x);
 				if(burst_hitcount == 0)
 				{
 					clearInterval(__burstevent);
 				}
-			}1
+			}
 			
+			boost_duration = 0;
+			boost_power = 1;
+			
+			function mult_damage(__duration,__amount)
+			{
+				__duration*=1000;
+				if(boost_duration!=0)
+					return;
+				boost_power*=__amount;
+				boost_duration = __duration;
+				
+				dmgbooster = setInterval(function(){ dmgboost_countdown(__amount);},1000);
+				
+			}
+			
+			function dmgboost_countdown(__amount)
+			{
+				boost_duration -=1000;
+				if(boost_duration <= 0)
+				{
+					clearInterval(dmgbooster);
+					boost_power = 1;
+				}
+			}
 			
 			setInterval(function(){ bossatk(); }, 100);
 			setInterval(function(){ studentatk(); }, 100);
-			
+
 		
 		</script>
 		
@@ -170,6 +196,8 @@
 		<button onclick="stun_boss(5)">STUN BOSS FOR 5 SECONDS</button>
 		<button onclick="multiply_dps(1.05)">INCREASE DPS BY 5%</button>
 		<button onclick="deal_burst_damage(sdps*3,5,0.2)">DEAL 5 HITS OF INSTANT DAMAGE</button>
+		</br>
+		<button onclick="mult_damage(10,2)">DOUBLES DAMAGE FOR 10 SECONDS</button>
 	</body>
 	
 	
