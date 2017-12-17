@@ -35,6 +35,7 @@ $name = $_SESSION['id'];
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="node_modules/js-cookie/src/js.cookie.js"></script>
     <link rel="stylesheet" href="node_modules/frontend/app-style.css">
+    <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
     <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
 
     <style>
@@ -51,19 +52,63 @@ $name = $_SESSION['id'];
             width: 100%;
             height: auto;
         }
-        .item{
-            width: 100%;
-            height: 100%;
-            background-color: gray;
-        }
+
         body{
             padding: 20px;
+        }
+        .item-modal{
+            padding: 20px;
+            position: absolute;
+            width: 100vw;
+            min-height: 50vh;
+            bottom: 0;
+            left: 0;
+            display:none;
+            z-index: 99;
+            background: white;
+        }
+        .overlay{
+            z-index: 98;
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            opacity: 0.4;
+            left:0;
+            bottom:0;
+            display: none;
+        }
+        .operation{
+            width: 100%;
         }
     </style>
 </head>
 
 <body>
-
+<div class="overlay"></div>
+<div class="item-modal">
+    <div class="row" style="margin-bottom: 20px;">
+        <div class="col-4">
+            <img src="/img/test.jpg" width="100px" alt="">
+        </div>
+        <div class="col-8" style="margin: auto;">
+            Name: Something <br>
+            Attack: 200
+        </div>
+    </div>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. At labore, maxime accusamus sed velit voluptatum. Tenetur fuga maxime recusandae error quisquam velit distinctio dolorem eius nesciunt eaque, sint. At, vitae.
+    <br>
+    <div class="row" style="margin-top: 20px;">
+        <div class="col-6" >
+            <button type="button" class="operation btn btn-outline-success">Use</button>
+        </div>
+        <div class="col-6">
+            <button id="close" type="button" class="operation btn btn-outline-danger">Close</button>
+        </div>
+    </div>    
+    
+</div>
+    
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home"
@@ -87,41 +132,49 @@ $name = $_SESSION['id'];
                 <button type="button" class="logout btn btn-outline-primary" style="margin-top:20px;">Log Out</button>
             </div>
             <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" >
-                <div class="inventory">
-                    <div class="row">
-                    <div class="col-sm-4">
-                        <div class="list-group" id="list-tab" role="tablist">
-                        <a class="list-group-item list-group-item-action active" id="list-1-list" data-toggle="list" href="#list-1" role="tab" aria-controls="1">Home</a>
-                        <a class="list-group-item list-group-item-action" id="list-2-list" data-toggle="list" href="#list-2" role="tab" aria-controls="2">Profile</a>
-                        <a class="list-group-item list-group-item-action" id="list-3-list" data-toggle="list" href="#list-3" role="tab" aria-controls="3">Messages</a>
-                        <a class="list-group-item list-group-item-action" id="list-4-list" data-toggle="list" href="#list-4" role="tab" aria-controls="4">Settings</a>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">test</div>
-                        <div class="tab-pane fade" id="list-2" role="tabpanel" aria-labelledby="list-2-list">shit</div>
-                        <div class="tab-pane fade" id="list-3" role="tabpanel" aria-labelledby="list-3-list">banana</div>
-                        <div class="tab-pane fade" id="list-4" role="tabpanel" aria-labelledby="list-4-list">omg</div>
-                        </div>
-                    </div>
-                    </div>                          
-                </div>
-
-
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Jacob</td>
+      <td>Misc</td>
+      <td><button id="1" class="item btn btn-success" type="submit">Use</button></td>
+    </tr>
+    <tr>
+      <td>Larry</td>
+      <td>Weapon</td>
+      <td><button id="2" class="item btn btn-success" type="submit">Use</button></td>
+    </tr>
+  </tbody>
+</table>
 
             </div>
             <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
-            
+
         </div>
 
 </body>
 <script>
-$('.logout').click(function() {
-    Cookies.remove('id');
-    window.location.href = 'index.php';
+$('.item').click(function() {
+    $(this).attr('id');
+    console.log("fuck")
+    $('.item-modal').fadeIn(200);
+    $('.overlay').fadeIn(200);
 });
-
+$('.overlay').click(function(){
+    $('.item-modal').fadeOut(200);
+    $('.overlay').fadeOut(200);
+});
+$('#close').click(function(){
+    $('.item-modal').fadeOut(200);
+    $('.overlay').fadeOut(200);
+});
 </script>
 <footer class="feet">
 <?php echo "php is working. (c) Pre MWITS 2018 Dev Team " ?>
