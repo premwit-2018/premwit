@@ -1,2 +1,4 @@
-[![CircleCI](https://circleci.com/gh/premwit-2018/premwit.svg?style=svg)](https://circleci.com/gh/premwit-2018/premwit)
-# PRE-MWIT 2018 Game
+MASTER: [![CircleCI](https://circleci.com/gh/premwits/premwits-2018/tree/master.svg?style=svg)](https://circleci.com/gh/premwits/premwits-2018/tree/master)
+BACK-END: [![CircleCI](https://circleci.com/gh/premwits/premwits-2018/tree/back-end.svg?style=svg)](https://circleci.com/gh/premwits/premwits-2018/tree/back-end)
+UI: [![CircleCI](https://circleci.com/gh/premwits/premwits-2018/tree/ui-guy.svg?style=svg)](https://circleci.com/gh/premwits/premwits-2018/tree/ui-guy)
+# PRE-MWITS 2018: Threat of Muggles
