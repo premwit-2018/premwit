@@ -276,7 +276,7 @@
 		$dmg = $dmg*log(200.0/$h);
 		$dmg = $dmg+1;
 			
-		return $coeff*$dmg*$a*$attr;
+		return round($coeff*$dmg*$a*$attr);
 			
 	}
 	
@@ -292,7 +292,7 @@
 		$dmg = $dmg*log(400.0/$h);
 		$dmg = $dmg+1;
 			
-		return $coeff*$dmg*$a*$attr;
+		return round($coeff*$dmg*$a*$attr);
 	}
 	
 	
@@ -301,7 +301,7 @@
 	function execute_boss_attack($phase,$t,$h,$ex,$a,$attr)
 	{
 		$database = db_connect();
-		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc());
+		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc())
 		$stunexp = $data['stun_expire'];
 		$stunned = $data['boss_stun'];
 		if($stunned)
@@ -336,13 +336,13 @@
 		$dmg = $dmg*$dmg;
 		$dmg = $dmg+1;
 			
-		return $coeff*$dmg*$a*$attr;
+		return round($coeff*$dmg*$a*$attr);
 	}
 	
 	function execute_student_attack($t,$ex,$a,$attr)
 	{
 		$database = db_connect();
-		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc());
+		$data = (($database->query("SELECT * FROM `Game_Data` WHERE 1;"))->fetch_assoc())
 	
 		if(True) #Ctrl C & Ctrl V is awesome
 		{
