@@ -13,14 +13,14 @@
 	<body onload="">
 		<script>
 		
-			var wingoal = 1000;
+			var wingoal = 500000;
 			var dmgdiff = 0;
 			
 			var bossex =1;
 			var bossamp=1;
 			var stdex=1;
 			var stdamp=1;
-			var stdadd;
+			var stdadd = 0;
 			var time=0;
 			var boss_tempmod = 1;
 			var stud_tempmod = 1;
@@ -64,7 +64,8 @@
 						ctx.fillStyle = "#42ff64";
 						ctx.fillRect(0,0,480,50);
 						ctx.fillStyle = color;
-						ctx.fillRect(0, 0, this.width, this.height);
+						ctx.fillRect(0, 0, this.x, this.height);
+						console.log(this.width);
 					}
     
 				}
@@ -89,23 +90,42 @@
 			function gethpx()
 			{
 				var x = 480*(dmgdiff+wingoal)/(wingoal*2);
-				return x-1480;
+				return x;
 			}
+			
+			
+			
 			
 			function getdpss()
 			{
-				(100+stdex)*(1+0.5*(1.2*Math.log(Math.E+(time/50)*(1.2*Math.log(Math.E+(time/50))*(stdamp)+(stdadd);
+				return (100+stdex)*(1+0.5*(1.2*Math.log(Math.E+(time/50))))*(1.2*Math.log(Math.E+(time/50)))*(stdamp)+(stdadd);
 			}
 			
 			function getdpsb1()
 			{
-				(150+bossex)*(1+0.5*(1*Math.log(Math.E+(time/50)*(1*Math.log(Math.E+(time/50))*Math.log(400/getbossperc()))*(bossamp);
+				return (150+bossex)*(1+0.5*(1*Math.log(Math.E+(time/50)))*(1*Math.log(Math.E+(time/50)))*Math.log(400/getbossperc()))*(bossamp);
 			}
 			
 			function getdpsb2()
 			{
-				(275+bossex)*(1+0.5*(1.2*Math.log(Math.E+(time/100)*(1.2*Math.log(Math.E+(time/100))*Math.log(400/getbossperc()))*(bossamp);
+				return (275+bossex)*(1+0.5*(1.2*Math.log(Math.E+(time/100)))*(1.2*Math.log(Math.E+(time/100)))*Math.log(400/getbossperc()))*(bossamp);
 			}
+			
+			
+			function damagetoboss()
+			{
+				dmgdiff -= getdpss()*0.1;
+			}
+			
+			function damagetostd()
+			{
+				if(bossphase==1)
+					dmgdiff+=(getdpsb1()/10);
+				else
+					dmgdiff+=(getdpsb2()/10);
+			}
+			
+			
 			
 			function timer()
 			{
@@ -132,9 +152,13 @@
 			{
 				return (500000+dmgdiff)/10000;
 			}
-			
+			setInterval(function(){console.log(dmgdiff)},100);
+			setInterval(function(){console.log("Boss dps ="+getdpsb1())},100);
+			setInterval(function(){console.log("Student dps ="+getdpss())},100);
 			setInterval(function(){timer();},1000);
-			
+			setInterval(function(){damagetoboss()},100);
+			setInterval(function(){damagetostd()},100);
+			setInterval(function(){bosshp.update()},100);
 			
 			
 		</script>
