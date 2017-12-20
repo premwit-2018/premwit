@@ -20,10 +20,14 @@
 			var bossamp=1;
 			var stdex=1;
 			var stdamp=1;
+			var stdadd;
 			var time=0;
 			var boss_tempmod = 1;
 			var stud_tempmod = 1;
+			var booster_countdown = 0;
 			var stun = 1;
+			var bossphase = 1;
+			var tincrement = 1;
 		
 			var healthbar = {
 				canvas : document.createElement("canvas"),
@@ -88,14 +92,24 @@
 				return x-1480;
 			}
 			
-			function boss_attack_p1()
+			function getdpss()
 			{
-				(150+bossex)*1;
+				(100+stdex)*(1+0.5*(1.2*Math.log(Math.E+(time/50)*(1.2*Math.log(Math.E+(time/50))*(stdamp)+(stdadd);
+			}
+			
+			function getdpsb1()
+			{
+				(150+bossex)*(1+0.5*(1*Math.log(Math.E+(time/50)*(1*Math.log(Math.E+(time/50))*Math.log(400/getbossperc()))*(bossamp);
+			}
+			
+			function getdpsb2()
+			{
+				(275+bossex)*(1+0.5*(1.2*Math.log(Math.E+(time/100)*(1.2*Math.log(Math.E+(time/100))*Math.log(400/getbossperc()))*(bossamp);
 			}
 			
 			function timer()
 			{
-				time+=1;
+				time+=tincrement;
 			}
 			
 			function stun_boss(seconds)
@@ -114,8 +128,15 @@
 				}
 			}
 			
-			setInterval(function(){time();},1000);
-		
+			function getbossperc()
+			{
+				return (500000+dmgdiff)/10000;
+			}
+			
+			setInterval(function(){timer();},1000);
+			
+			
+			
 		</script>
 		</br>
 		<button onclick="bossdmg(10)">DAMAGE BOSS 10</button>
