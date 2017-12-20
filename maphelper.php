@@ -2,7 +2,7 @@
   require_once "dbhelper.php";
   session_start();
   $id = $_SESSION['id'];
-  $addnum = $_POST[''];
+  $addnum = $_POST['mapnum'];
   $conn = connect_db();
   $stmt = $conn->query("SELECT * FROM maps WHERE id = $id");
   $row = $stmt->fetch_array(MYSQLI_FETCH_ASSOC) or die('ID NOT FOUND');
