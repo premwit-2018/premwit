@@ -15,7 +15,7 @@
 		
 			
 
-			var wingoal =500000;
+			var wingoal =50000;
 			var dmgdiff = 0;
 
 			var bossex =1;
@@ -27,7 +27,7 @@
 			var boss_tempmod = 1;
 			var stud_tempmod = 1;
 			var booster_countdown = 0;
-			var stun = 1;
+			var stun = 0;
 			var bossphase = 1;
 			var tincrement = 1;
 		
@@ -120,15 +120,16 @@
 			
 			function damagetoboss()
 			{
-				dmgdiff -= getdpss()*0.1;
+				dmgdiff -= (getdpss()*0.1);
 			}
 			
 			function damagetostd()
 			{
-				if(bossphase==1)
-					dmgdiff+=(getdpsb1()/10);
-				else
-					dmgdiff+=(getdpsb2()/10);
+				if(stun<=0)
+					if(bossphase==1)
+						dmgdiff+=(getdpsb1()*0.1);
+					else
+						dmgdiff+=(getdpsb2()*0.1);
 			}
 			
 			
@@ -140,7 +141,7 @@
 			function stun_boss(seconds)
 			{
 				stun = seconds;
-				stundur = setInterval(function(){stun_countdown();},1000);
+				stundur = setInterval(function(){stun_countdown();},100);
 
 			}
 
@@ -155,18 +156,18 @@
 			
 			function getbossperc()
 			{
-				return (500000+dmgdiff)/10000;
+				return 100*(50000+dmgdiff)/100000;
 			}
-			setInterval(function(){console.log(dmgdiff)},100);
-			setInterval(function(){console.log("Boss dps ="+getdpsb1())},100);
-			setInterval(function(){console.log("Student dps ="+getdpss())},100);
-			setInterval(function(){timer();},1000);
-			setInterval(function(){damagetoboss()},100);
-			setInterval(function(){damagetostd()},100);
-			setInterval(function(){bosshp.update()},100);
+			setInterval(function(){console.log(dmgdiff)},10);
+			setInterval(function(){console.log("Boss dps ="+getdpsb1())},10);
+			setInterval(function(){console.log("Student dps ="+getdpss())},10);
+			setInterval(function(){timer();},100);
+			setInterval(function(){damagetoboss()},10);
+			setInterval(function(){damagetostd()},10);
+			setInterval(function(){bosshp.update()},10);
 			
 			
-			setInterval(function(){timer();},1000);
+			setInterval(function(){timer();},100);
 
 			function manual_atk(dmg)
 			{
@@ -254,7 +255,7 @@
 			{
 				stud_tempmod *= 2;
 				booster_countdown = 60;
-				a = setInterval(function(){bstcountdown_std()},1000);
+				a = setInterval(function(){bstcountdown_std()},100);
 			}
 
 			function bstcountdown_boss()
@@ -271,7 +272,7 @@
 			{
 				boss_tempmod /= 2;
 				booster_countdown = 60;
-				a = setInterval(function(){bstcountdown_boss()},1000);
+				a = setInterval(function(){bstcountdown_boss()},100);
 			}
 
 			function item_extra_10 ()
@@ -286,7 +287,7 @@
 
 			function item_extra_12 ()
 			{
-				dmgdiff = ((dmgdiff+500000)/2)-500000;
+				dmgdiff = ((dmgdiff+wingoal)/2)-wingoal;
 			}
 
 			function item_extra_13 ()
@@ -314,7 +315,7 @@
 		<button onclick="item_extra_1()">BOSS DPS 0.95</button>
 		<button onclick="item_extra_2()">STUDENT DPS 1.05</button>
 		<button onclick="item_extra_3()">Time/1.25</button>
-		<button onclick="item_extra_5()">DPS B +50</button>
+		<button onclick="item_extra_4()">DPS B +50</button>
 		</br>
 		<button onclick="item_extra_6()">ATK B +100</button>
 		<button onclick="item_extra_7()">BOSS DMG COUNTER 0.75</button>
