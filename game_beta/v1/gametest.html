@@ -15,6 +15,12 @@
 		
 			var wingoal = 1000;
 			var dmgdiff = 0;
+			
+			var bossex =1;
+			var bossamp=1;
+			var stdex=1;
+			var stdamp=1;
+			var time=0;
 		
 			var healthbar = {
 				canvas : document.createElement("canvas"),
@@ -79,6 +85,17 @@
 				return x-1480;
 			}
 			
+			function boss_attack_p1()
+			{
+				
+			}
+			
+			function timer()
+			{
+				time+=1;
+			}
+			
+			setInterval(function(){time();},1000);
 		
 		</script>
 		</br>
