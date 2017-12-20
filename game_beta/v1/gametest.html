@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			canvas 
+			{
+				border:1px solid #d3d3d3;
+				background-color: #42ff64;
+			}
+		</style>
+	</head>
+	
+	<body onload="">
+		<script>
+		
+			var wingoal = 1000;
+			var dmgdiff = 0;
+			
+			var bossex =1;
+			var bossamp=1;
+			var stdex=1;
+			var stdamp=1;
+			var time=0;
+			var boss_tempmod = 1;
+			var stud_tempmod = 1;
+			var stun = 1;
+		
+			var healthbar = {
+				canvas : document.createElement("canvas"),
+				start : function() {
+					this.canvas.width = 480;
+					this.canvas.height = 50;
+					this.context = this.canvas.getContext("2d");
+					document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+					bosshp = new component(480,50,"red",-240,0);
+				}
+				
+			}
+			
+			healthbar.start();
+			
+			function component(width, height, color, x, y, type) 
+			{
+				this.type = type;
+				this.score = 0;
+				this.width = 480;
+				this.height = 50;
+				this.speedX = 0;
+				this.speedY = 0;    
+				this.x = x;
+				this.y = y;
+				this.update = function() {
+					ctx = healthbar.context;
+					if (this.type == "text") {
+						ctx.font = this.width + " " + this.height;
+						ctx.fillStyle = color;
+						ctx.fillText(this.text, this.x, this.y);
+					} else {
+						this.x = gethpx();
+						ctx.fillStyle = "#42ff64";
+						ctx.fillRect(0,0,480,50);
+						ctx.fillStyle = color;
+						ctx.fillRect(0, 0, this.width, this.height);
+					}
+    
+				}
+			}
+			
+			bosshp.update();
+			
+			function bossdmg(damage)
+			{
+				dmgdiff -= damage;
+				bosshp.update();
+				console.log(bosshp.x);
+			}
+			
+			function studentdmg(damage)
+			{
+				dmgdiff += damage;
+				bosshp.update();
+				console.log(bosshp.x);
+			}
+			
+			function gethpx()
+			{
+				var x = 480*(dmgdiff+wingoal)/(wingoal*2);
+				return x-1480;
+			}
+			
+			function boss_attack_p1()
+			{
+				(150+bossex)*1;
+			}
+			
+			function timer()
+			{
+				time+=1;
+			}
+			
+			function stun_boss(seconds)
+			{
+				stun = seconds;
+				stundur = setInterval(function(){stun_countdown();},1000);
+				
+			}
+			
+			function stun_countdown()
+			{
+				stun-=1;
+				if(stun==0)
+				{
+					clearInterval(stundur);;
+				}
+			}
+			
+			setInterval(function(){time();},1000);
+		
+		</script>
+		</br>
+		<button onclick="bossdmg(10)">DAMAGE BOSS 10</button>
+		<button onclick="studentdmg(10)">DAMAGE STUDENTS 10</button>
+		
+		</br>
+		<button onclick="bossdmg(50)">DAMAGE BOSS 50</button>
+		<button onclick="studentdmg(50)">DAMAGE STUDENTS 50</button>
+	</body>
+	
+	
+</html>

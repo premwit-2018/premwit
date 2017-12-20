@@ -1,0 +1,7 @@
+Version 2:
+	-Damage is now automatically dealt every 0.1 seconds.
+	-Boss and students both attacks, with boss having more initial dps.
+	-Added 3 items : stun, increase dps and burst damage.
+Version 2.1:
+	-Added 1 item : double damage
+	-Minor bug fixes.

@@ -105,10 +105,10 @@ $name = $_SESSION['id'];
         <div class="col-6">
             <button id="close" type="button" class="operation btn btn-outline-danger">Close</button>
         </div>
-    </div>    
-    
+    </div>
+
 </div>
-    
+
         <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home"
@@ -161,6 +161,9 @@ $name = $_SESSION['id'];
 
 </body>
 <script>
+$('.logout').click(function() {
+    window.location.replace("logout.php");
+})
 $('.item').click(function() {
     $(this).attr('id');
     console.log("fuck")
