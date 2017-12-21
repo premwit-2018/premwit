@@ -343,17 +343,18 @@
 <script>
 function executeQuery() {
     $.ajax({
-            type: "POST",
-            url: "node_modules/backend/pushapi.php",
-            data: {
-                hp: dmgdiff,
-            },
-            success: function () {
-                console.log("yea boi");
-            }
-        });
-        setTimeout(executeQuery, 1000);
+        type: "POST",
+        url: "node_modules/backend/pushapi.php",
+        data: {
+            hp: dmgdiff,
+        },
+        success: function () {
+            console.log("yea boi");
+        }
+    });
+    setTimeout(executeQuery, 1000);
 }
+executeQuery();
     $(".btn").click(function(){
         console.log("clicked");
         console.log(dmgdiff);
