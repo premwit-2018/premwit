@@ -15,7 +15,7 @@
 		
 			
 
-			var wingoal =50000;
+			var wingoal =500000;
 			var dmgdiff = 0;
 
 			var bossex =1;
@@ -71,7 +71,7 @@
 						ctx.fillRect(0,0,480,50);
 						ctx.fillStyle = color;
 						ctx.fillRect(0, 0, this.x, this.height);
-						console.log(this.width);
+						//console.log(this.x);
 					}
 
 				}
@@ -96,6 +96,7 @@
 			function gethpx()
 			{
 				var x = 480*(dmgdiff+wingoal)/(wingoal*2);
+				console.log("X=")
 				return x;
 			}
 			
@@ -141,7 +142,7 @@
 			function stun_boss(seconds)
 			{
 				stun = seconds;
-				stundur = setInterval(function(){stun_countdown();},100);
+				stundur = setInterval(function(){stun_countdown();},1000);
 
 			}
 
@@ -156,18 +157,18 @@
 			
 			function getbossperc()
 			{
-				return 100*(50000+dmgdiff)/100000;
+				return 100*(500000+dmgdiff)/1000000;
 			}
-			setInterval(function(){console.log(dmgdiff)},10);
-			setInterval(function(){console.log("Boss dps ="+getdpsb1())},10);
-			setInterval(function(){console.log("Student dps ="+getdpss())},10);
-			setInterval(function(){timer();},100);
-			setInterval(function(){damagetoboss()},10);
-			setInterval(function(){damagetostd()},10);
-			setInterval(function(){bosshp.update()},10);
+			setInterval(function(){console.log(dmgdiff)},100);
+			setInterval(function(){console.log("Boss dps ="+getdpsb1())},100);
+			setInterval(function(){console.log("Student dps ="+getdpss())},100);
+			setInterval(function(){timer();},1000);
+			setInterval(function(){damagetoboss()},100);
+			setInterval(function(){damagetostd()},100);
+			setInterval(function(){bosshp.update()},100);
 			
 			
-			setInterval(function(){timer();},100);
+			setInterval(function(){timer();},1000);
 
 			function manual_atk(dmg)
 			{
@@ -253,9 +254,14 @@
 
 			function item_extra_8 ()
 			{
+				if(booster_countdown>0)
+				{
+					booster_countdown+=60;
+					return;
+				}
 				stud_tempmod *= 2;
 				booster_countdown = 60;
-				a = setInterval(function(){bstcountdown_std()},100);
+				a = setInterval(function(){bstcountdown_std()},1000);
 			}
 
 			function bstcountdown_boss()
@@ -272,7 +278,7 @@
 			{
 				boss_tempmod /= 2;
 				booster_countdown = 60;
-				a = setInterval(function(){bstcountdown_boss()},100);
+				a = setInterval(function(){bstcountdown_boss()},1000);
 			}
 
 			function item_extra_10 ()
@@ -288,6 +294,7 @@
 			function item_extra_12 ()
 			{
 				dmgdiff = ((dmgdiff+wingoal)/2)-wingoal;
+				//console.log(dmgdiff);
 			}
 
 			function item_extra_13 ()
