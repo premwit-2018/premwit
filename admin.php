@@ -340,5 +340,21 @@
 			</div>
 		</li>
 	</ul>
+<script>
 
+    $(".btn").click(function(){
+        console.log("clicked");
+        console.log(dmgdiff);
+        $.ajax({
+            type: "POST",
+            url: "node_modules/backend/pushapi.php",
+            data: {
+                hp: dmgdiff,
+            },
+            success: function () {
+                console.log("yea boi");
+            }
+        });
+    });
+</script>
 </html>
