@@ -341,11 +341,8 @@
 		</li>
 	</ul>
 <script>
-
-    $(".btn").click(function(){
-        console.log("clicked");
-        console.log(dmgdiff);
-        $.ajax({
+function executeQuery() {
+    $.ajax({
             type: "POST",
             url: "node_modules/backend/pushapi.php",
             data: {
@@ -355,6 +352,12 @@
                 console.log("yea boi");
             }
         });
+        setTimeout(executeQuery, 1000);
+}
+    $(".btn").click(function(){
+        console.log("clicked");
+        console.log(dmgdiff);
+
     });
 </script>
 </html>
