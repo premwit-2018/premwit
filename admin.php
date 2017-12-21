@@ -345,13 +345,10 @@ function executeQuery() {
     $.ajax({
         type: "POST",
         url: "node_modules/backend/pushapi.php",
-        data: {
-            hp: dmgdiff,
-        },
-        success: function (data) {
-            console.log(data);
-        }
-    });
+        data: {hp: dmgdiff},
+    }).done(function (data) {
+        console.log(data);
+    )};
     setTimeout(executeQuery, 1000);
 }
 executeQuery();
