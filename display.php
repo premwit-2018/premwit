@@ -12,26 +12,57 @@
 	<script src="/node_modules/materialize-css/dist/js/materialize.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
 	<style>
-		canvas {
-			border: 1px solid #d3d3d3;
-			background-color: #42ff64;
+		body{
+			font-family: 'Kanit', sans-serif;
 		}
-		button{
-			margin: 5px;
+		.barcontainer{
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 35px;
+			width: 500px;
+			height: 40px;
+			padding: 0;
+			background-color: #4caf50;
+			border-radius: 30px;
+		}
+		.bar{
+			width: 300px;
+			height: 40px;
+			background-color: #f44336; 
+			transition: all 0.2s;
+			border-radius: 30px;
+		}
+		.hp{
+			padding-top: 8px;
+    		color: white;
+    		text-align: center;
 		}
 	</style>
 </head>
 <body>
-    
+    <div class="barcontainer">
+		<div class="bar"><div class="hp"></div></div>
+	</div>
 </body>
 <script>
-$.ajax({
-  	url: "/node_modules/backend/api.php",
-  	type: "POST",
-	dataType: "json",
-}).done(function(data) {
-  console.log(data);
-});
+var hpboss = 100;
+function executeQuery() {
+	$.ajax({
+		url: "/node_modules/backend/api.php",
+		type: "POST",
+		dataType: "json",
+	}).done(function(data) {
+		hpboss = data;
+	});
+	setTimeout(executeQuery, 1000);
+	console.log(hpboss);
+	$(".hp").text(hpboss);
+	var percent = 100-((hpboss/50000)*100);
+	$(".bar").css("width", percent+"%");	
+};
+executeQuery();
+
+
 
 
 </script>
