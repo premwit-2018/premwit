@@ -15,7 +15,7 @@
 		
 			
 
-			var wingoal =500000;
+			var wingoal =50000;
 			var dmgdiff = 0;
 
 			var bossex =1;
@@ -125,10 +125,11 @@
 			
 			function damagetostd()
 			{
-				if(bossphase==1)
-					dmgdiff+=(getdpsb1()/10);
-				else
-					dmgdiff+=(getdpsb2()/10);
+				if(stun==0)
+					if(bossphase==1)
+						dmgdiff+=(getdpsb1()/10);
+					else
+						dmgdiff+=(getdpsb2()/10);
 			}
 			
 			
@@ -140,7 +141,7 @@
 			function stun_boss(seconds)
 			{
 				stun = seconds;
-				stundur = setInterval(function(){stun_countdown();},1000);
+				stundur = setInterval(function(){stun_countdown();},100);
 
 			}
 
@@ -157,16 +158,16 @@
 			{
 				return (500000+dmgdiff)/10000;
 			}
-			setInterval(function(){console.log(dmgdiff)},100);
-			setInterval(function(){console.log("Boss dps ="+getdpsb1())},100);
-			setInterval(function(){console.log("Student dps ="+getdpss())},100);
-			setInterval(function(){timer();},1000);
-			setInterval(function(){damagetoboss()},100);
-			setInterval(function(){damagetostd()},100);
-			setInterval(function(){bosshp.update()},100);
+			setInterval(function(){console.log(dmgdiff)},10);
+			setInterval(function(){console.log("Boss dps ="+getdpsb1())},10);
+			setInterval(function(){console.log("Student dps ="+getdpss())},10);
+			setInterval(function(){timer();},100);
+			setInterval(function(){damagetoboss()},10);
+			setInterval(function(){damagetostd()},10);
+			setInterval(function(){bosshp.update()},10);
 			
 			
-			setInterval(function(){timer();},1000);
+			setInterval(function(){timer();},100);
 
 			function manual_atk(dmg)
 			{
@@ -254,7 +255,7 @@
 			{
 				stud_tempmod *= 2;
 				booster_countdown = 60;
-				a = setInterval(function(){bstcountdown_std()},1000);
+				a = setInterval(function(){bstcountdown_std()},100);
 			}
 
 			function bstcountdown_boss()
@@ -271,7 +272,7 @@
 			{
 				boss_tempmod /= 2;
 				booster_countdown = 60;
-				a = setInterval(function(){bstcountdown_boss()},1000);
+				a = setInterval(function(){bstcountdown_boss()},100);
 			}
 
 			function item_extra_10 ()
