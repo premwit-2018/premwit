@@ -27,7 +27,7 @@
 		}
 		.bar{
 			width: 300px;
-			height: 40px;
+			height: 40px; 	
 			background-color: #f44336; 
 			transition: all 0.2s;
 			border-radius: 30px;
@@ -57,7 +57,7 @@ function executeQuery() {
 	setTimeout(executeQuery, 1000);
 	console.log(hpboss);
 	$(".hp").text(hpboss);
-	var percent = 100-((hpboss/50000)*100);
+	var percent = 50-((hpboss/500000)*100);
 	$(".bar").css("width", percent+"%");	
 };
 executeQuery();
