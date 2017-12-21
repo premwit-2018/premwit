@@ -11,11 +11,12 @@
 	</head>
 
 	<body onload="">
+		<h1>Game at x10 speed</h1>
 		<script>
 		
 			
 
-			var wingoal =50000;
+			var wingoal =500000;
 			var dmgdiff = 0;
 
 			var bossex =1;
@@ -104,7 +105,7 @@
 			
 			function getdpss()
 			{
-				return (100+stdex)*(1+0.5*(1.2*Math.log(Math.E+(time/50))))*(1.2*Math.log(Math.E+(time/50)))*(stdamp)+(stdadd);
+				return ((100+stdex)*(1+0.5*(1.2*Math.log(Math.E+(time/50))))*(1.2*Math.log(Math.E+(time/50)))*(stdamp)+(stdadd))*stud_tempmod;
 			}
 			
 			function getdpsb1()
@@ -156,7 +157,7 @@
 			
 			function getbossperc()
 			{
-				return 100*(50000+dmgdiff)/100000;
+				return 100*(wingoal+dmgdiff)/(wingoal*2);
 			}
 			setInterval(function(){console.log(dmgdiff)},10);
 			setInterval(function(){console.log("Boss dps ="+getdpsb1())},10);
@@ -253,6 +254,11 @@
 
 			function item_extra_8 ()
 			{
+				if(booster_countdown!=0)
+				{
+					booster_countdown+=60;
+					return;
+				}
 				stud_tempmod *= 2;
 				booster_countdown = 60;
 				a = setInterval(function(){bstcountdown_std()},100);
