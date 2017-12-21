@@ -10,7 +10,9 @@
   $stmt = $conn->query("SELECT * FROM maps WHERE id = $id");
   $row = $stmt->fetch_assoc() or die('ID NOT FOUND');
   $k = $row['bimap'];
-  $k = $k | (1 << $addnum);
+  if($k & (1 << $addnum)){
+    $k -= (1 << $addnum);
+  }
   if($stmt->fetch_assoc()){
     die('TOO MANY IDs');
   }
