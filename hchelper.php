@@ -4,13 +4,15 @@
   $addnum = $_POST['hcnum'];
   $conn = connect_db();
   $stmt = $conn->query("SELECT * FROM hc");
-  $row = $stmt->fetch_array(MYSQLI_FETCH_ASSOC) or die('ROW NOT FOUND');
+  $row = $stmt->fetch_assoc() or die('ROW NOT FOUND');
   $k = $row['bihc'];
+  $addnum--;
   $k = $k | (1 << $addnum);
-  if($stmt->fetch_array(MYSQLI_FETCH_ASSOC)){
+  if($stmt->fetch_assoc()){
     die('TOO MANY IDs');
   }
   $stmt->free_result();
   $conn->query("UPDATE hc SET bihc = $k") or die('UPDATE ERROR');
   close_db($conn);
+  header("Location: hc_interface.php");
 ?>
