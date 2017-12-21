@@ -348,8 +348,8 @@ function executeQuery() {
         data: {
             hp: dmgdiff,
         },
-        success: function () {
-            console.log("yea boi");
+        success: function (data) {
+            console.log(data);
         }
     });
     setTimeout(executeQuery, 1000);
