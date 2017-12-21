@@ -22,13 +22,13 @@
 			width: 500px;
 			height: 40px;
 			padding: 0;
-			background-color: #4caf50;
+			background-color: #f44336; 
 			border-radius: 30px;
 		}
 		.bar{
 			width: 300px;
 			height: 40px; 	
-			background-color: #f44336; 
+			background-color: #4caf50;
 			transition: all 0.2s;
 			border-radius: 30px;
 		}
@@ -54,7 +54,7 @@ function executeQuery() {
 	}).done(function(data) {
 		hpboss = data;
 	});
-	setTimeout(executeQuery, 1000);
+	setTimeout(executeQuery, 100);
 	console.log(hpboss);
 	$(".hp").text(hpboss);
 	var percent = 50-((hpboss/500000)*100);
