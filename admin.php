@@ -348,7 +348,7 @@ function executeQuery() {
         data: {hp: dmgdiff},
     }).done(function (data) {
         console.log(data);
-    )};
+    });
     setTimeout(executeQuery, 1000);
 }
 executeQuery();
