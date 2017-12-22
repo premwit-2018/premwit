@@ -11,6 +11,35 @@
 	<script src="/node_modules/tether/dist/js/tether.min.js"></script>
 	<script src="/node_modules/materialize-css/dist/js/materialize.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyAEX9X8bnUyVoI2OKMhJqy3dJmEErzRRXc",
+		authDomain: "pre-mwits-2018-cdn.firebaseapp.com",
+		databaseURL: "https://pre-mwits-2018-cdn.firebaseio.com",
+		projectId: "pre-mwits-2018-cdn",
+		storageBucket: "pre-mwits-2018-cdn.appspot.com",
+		messagingSenderId: "655785045663"
+	  };
+	  
+	  firebase.initializeApp(config);
+
+	  var db = firebase.database().ref().child('boss');
+	  var bosshp = db.child('hp');
+	  var holdon = firebase.database().ref().child('holdval');
+	function write(){
+		var newPostKey = firebase.database().ref('holdval').push().key;
+		var updates = {};
+		updates['/holdval/' + newPostKey] = "true";
+		return firebase.database().ref().update(updates);
+	}
+	function push() {
+		db.set({
+			dmgdiff:dmgdiff,
+		});
+	};
+	</script>		
 	<style>
 		canvas {
 			border: 1px solid #d3d3d3;
@@ -22,9 +51,9 @@
 		}
 	</style>
 	<script>
+		
 			var wingoal =500000;
 			var dmgdiff = 0;
-
 			var bossex =1;
 			var bossamp=1;
 			var stdex=1;
@@ -37,10 +66,9 @@
 			var stun = 0;
 			var bossphase = 1;
 			var tincrement = 1;
-		
-
 			var item_13_check = 0;
 			var item_14_check = 0;
+
 
 //			var healthbar = {
 //				canvas : document.createElement("canvas"),
@@ -166,9 +194,10 @@
 			{
 				return 100*(wingoal+dmgdiff)/(wingoal*2);
 			}
+			
 			setInterval(function(){$(".dmgdiff").text(dmgdiff)},100);
-			setInterval(function(){console.log("Boss dps ="+getdpsb1())},100);
-			setInterval(function(){console.log("Student dps ="+getdpss())},100);
+			//setInterval(function(){console.log("Boss dps ="+getdpsb1())},100);
+			//setInterval(function(){console.log("Student dps ="+getdpss())},100);
 			setInterval(function(){timer();},1000);
 			setInterval(function(){damagetoboss()},100);
 			setInterval(function(){damagetostd()},100);
@@ -366,25 +395,18 @@
 		</li>
 	</ul>
 <script>
-	
+
 function executeQuery() {
-	$.ajax({
-		type: "POST",
-		url: "/node_modules/backend/pushapi.php",
-		data: {
-			hp: $(".dmgdiff").text(),
-		},
-		success: function(result){
-			console.log(result);
-			console.log("success");
-		}
-	});
 	console.log(dmgdiff);
+	push(dmgdiff);
 	setTimeout(executeQuery, 100);
 };
-
+$(".btn").click(function(){
+	push();
+});
 executeQuery();
     $(".btn").click(function(){
-    });
+		write();
+	});
 </script>
 </html>

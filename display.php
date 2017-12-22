@@ -11,6 +11,22 @@
 	<script src="/node_modules/tether/dist/js/tether.min.js"></script>
 	<script src="/node_modules/materialize-css/dist/js/materialize.min.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+	<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyAEX9X8bnUyVoI2OKMhJqy3dJmEErzRRXc",
+		authDomain: "pre-mwits-2018-cdn.firebaseapp.com",
+		databaseURL: "https://pre-mwits-2018-cdn.firebaseio.com",
+		projectId: "pre-mwits-2018-cdn",
+		storageBucket: "pre-mwits-2018-cdn.appspot.com",
+		messagingSenderId: "655785045663"
+	  };
+	  
+	  firebase.initializeApp(config);
+	  var db = firebase.database().ref().child('boss');	
+	</script>
 	<style>
 		body{
 			font-family: 'Kanit', sans-serif;
@@ -21,31 +37,61 @@
 			margin-top: 35px;
 			width: 500px;
 			height: 40px;
-			padding: 0;
-			background-color: #f44336; 
+			padding: 8px;
+			background-color: #eceff1;
 			border-radius: 30px;
+			padding-top: 8px;
+			padding-left: 8px;
 		}
 		.bar{
-			width: 300px;
-			height: 40px; 	
+			height: 24px;
 			background-color: #4caf50;
 			transition: all 0.2s;
 			border-radius: 30px;
 		}
 		.hp{
 			padding-top: 8px;
-    		color: white;
+
     		text-align: center;
 		}
 	</style>
 </head>
 <body>
     <div class="barcontainer">
-		<div class="bar"><div class="hp"></div></div>
+		<div class="bar"></div>
 	</div>
+	<div class="hp"></div>
+	<div class="atk">Attacked</div>
 </body>
 <script>
-var hpboss = 100;
+$.fn.extend({
+    animateCss: function (animationName, callback) {
+        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+        this.addClass('animated ' + animationName).one(animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+            if (callback) {
+              callback();
+            }
+        });
+        return this;
+    }
+});
+
+var bosshp = db.child('dmgdiff');
+var hpboss = 0; 
+var atk = firebase.database().ref().child('holdval');
+atk.on('value',snap => {
+	$(".atk").animateCss('flash');
+	console.log("attacked");
+});
+bosshp.on('value',snap => {
+	hpboss = 500000 + snap.val();
+	var percent = (hpboss/500000)*100;
+	$(".hp").text(Math.floor(500000*(percent/200)));
+	$(".bar").css("width", percent/2+"%");	
+});
+
+/*
 function executeQuery() {
 	$.ajax({
 		url: "/node_modules/backend/api.php",
@@ -61,7 +107,7 @@ function executeQuery() {
 	$(".bar").css("width", percent+"%");	
 };
 executeQuery();
-
+*/
 
 
 
