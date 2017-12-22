@@ -7,7 +7,9 @@
   $row = $stmt->fetch_assoc() or die('ROW NOT FOUND');
   $k = $row['bihc'];
   $addnum--;
-  $k = $k | (1 << $addnum);
+  if($k & (1 << $addnum)){
+    $k -= (1 << $addnum);
+  }
   if($stmt->fetch_assoc()){
     die('TOO MANY IDs');
   }
