@@ -276,7 +276,7 @@
 		$dmg = $dmg*log(200.0/$h);
 		$dmg = $dmg+1;
 			
-		return $coeff*$dmg*$a*$attr;
+		return round($coeff*$dmg*$a*$attr);
 			
 	}
 	
@@ -292,7 +292,7 @@
 		$dmg = $dmg*log(400.0/$h);
 		$dmg = $dmg+1;
 			
-		return $coeff*$dmg*$a*$attr;
+		return round($coeff*$dmg*$a*$attr);
 	}
 	
 	
@@ -336,7 +336,7 @@
 		$dmg = $dmg*$dmg;
 		$dmg = $dmg+1;
 			
-		return $coeff*$dmg*$a*$attr;
+		return round($coeff*$dmg*$a*$attr);
 	}
 	
 	function execute_student_attack($t,$ex,$a,$attr)
