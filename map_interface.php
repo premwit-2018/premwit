@@ -1,6 +1,19 @@
+<!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>Pre MWIT 2018</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="node_modules/materialize-css/dist/css/materialize.min.css" rel="stylesheet">
+    <link href="node_modules/tether/dist/css/tether.min.css" rel="stylesheet">
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/tether/dist/js/tether.min.js"></script>
+    <script src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
+    <script src="node_modules/js-cookie/src/js.cookie.js"></script>
+    <link rel="stylesheet" href="node_modules/frontend/app-style.css">
+    <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Kanit:300,400|Material+Icons" rel="stylesheet">
 </head>
 <body>
   <h1>เก็บแผนที่ได้ที่นี่</h1>

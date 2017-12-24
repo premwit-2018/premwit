@@ -1,5 +1,5 @@
 <?php
-
+/*
 session_start();
 if(isset($_SESSION['id'])){
     require_once "dbhelper.php";
@@ -20,10 +20,10 @@ else{
     header('Location: index.php');
 }
 $name = $_SESSION['id'];
-
+*/
 ?>
 
-    <!doctype html>
+    <!DOCTYPE html>
     <html>
 
     <head>
@@ -39,8 +39,47 @@ $name = $_SESSION['id'];
         <link rel="stylesheet" href="node_modules/frontend/app-style.css">
         <link rel="stylesheet" href="node_modules/animate.css/animate.min.css">
         <link href="https://fonts.googleapis.com/css?family=Kanit:300,400|Material+Icons" rel="stylesheet">
-
+        <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+		apiKey: "AIzaSyAEX9X8bnUyVoI2OKMhJqy3dJmEErzRRXc",
+		authDomain: "pre-mwits-2018-cdn.firebaseapp.com",
+		databaseURL: "https://pre-mwits-2018-cdn.firebaseio.com",
+		projectId: "pre-mwits-2018-cdn",
+		storageBucket: "pre-mwits-2018-cdn.appspot.com",
+		messagingSenderId: "655785045663"
+	  };
+	  
+    firebase.initializeApp(config);
+    var db = firebase.database();
+    var i=1;
+    var j;
+    db.ref("map/Group "+i).on('value',snap => {
+        var data = snap.val();
+        console.log(data);
+        for(j = 1; j<=9; j++){
+            if(data[j]!=false){
+                $("#field"+j).css("background-image","url("+ data[j] +")");
+            }
+            else{
+                $("#field"+j).css("background","#f3c58a");
+            }
+        }
+        
+    });      
+    
+  </script>
         <style>
+            .map{
+                background-size: cover;
+                background-position: center;
+                width: 33vw;
+                margin: 0;
+                height: 33vw;
+                background-color: gray;
+                float: left;
+            }
             .tabcontent {
                 padding-top: 70px;
                 text-align: center;
@@ -120,7 +159,7 @@ $name = $_SESSION['id'];
         <div class="navbar-fixed">
             <nav class="nav-extended blue-grey darken-4">
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo">ลงทะเบียน</a>
+                    <a href="#" class="brand-logo">Pre-MWITS 2k18</a>
                     <a href="#" data-activates="mobile-demo" class="button-collapse">
                         <i class="material-icons">menu</i>
                     </a>
@@ -136,11 +175,6 @@ $name = $_SESSION['id'];
                         <li class="tab">
                             <a id="first" href="#profile">
                                 Profile
-                            </a>
-                        </li>
-                        <li class="tab 2">
-                            <a id="second" href="#inventory">
-                                Inventory
                             </a>
                         </li>
                         <li class="tab 3">
@@ -169,39 +203,23 @@ $name = $_SESSION['id'];
             <br> Group:
             <?php echo $group ?>
         </div>
-        <div id="inventory" class="tabcontent col s12">
-            <table class="centered highlight" style="max-width: 800px; margin:auto;">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Type</th>
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Jacob</td>
-                        <td>Misc</td>
-                        <td>
-                            <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Use</a>
-                            
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Larry</td>
-                        <td>Weapon</td>
-                        <td>
-                                <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Use</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
         <div id="map" class="tabcontent col s12">
-
+            <div style="width: 100vw; height: 33vw;">
+                <div class="map" id="field1"></div>
+                <div class="map" id="field2"></div>
+                <div class="map" id="field3"></div>
+            </div>
+            <div style="width: 100vw; height: 33vw;">
+                <div class="map" id="field4"></div>
+                <div class="map" id="field5"></div>
+                <div class="map" id="field6"></div>
+            </div>
+            <div style="width: 100vw; height: 33vw;">
+                <div class="map" id="field7"></div>
+                <div class="map" id="field8"></div>
+                <div class="map" id="field9"></div>
+            </div>                        
         </div>
-
     </body>
     <script>
         $(document).ready(function(){
