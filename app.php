@@ -1,7 +1,6 @@
 <?php
-/*
-session_start();
-if(isset($_SESSION['id'])){
+
+if(isset($_COOKIE['id'])){
     require_once "dbhelper.php";
     $conn = connect_db();
     if(!$conn){
@@ -10,7 +9,7 @@ if(isset($_SESSION['id'])){
         die();
     }
     $getdata = $conn->prepare("SELECT * FROM user WHERE user = ?");
-    $getdata->bind_param('s',$_SESSION['id']);
+    $getdata->bind_param('s',$_COOKIE['id']);
     $getdata->execute();
     $userdata = $getdata->get_result();
     $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
@@ -19,8 +18,7 @@ if(isset($_SESSION['id'])){
 else{
     header('Location: index.php');
 }
-$name = $_SESSION['id'];
-*/
+$name = $_COOKIE['id'];
 ?>
 
     <!DOCTYPE html>

@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once "dbhelper.php";
 $user = $_POST['username'];
 $password = $_POST['password'];
@@ -16,7 +15,7 @@ $userdata = $getuser->get_result();
 $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
 
 if (password_verify($password, $row['pass'])) {
-	$_SESSION["id"] = $row['id'];
+	setcookie('id',$row['id'],time()+86400,"/");
     echo 'Success redirecting ...';
     header('Location: app.php');
     exit();
