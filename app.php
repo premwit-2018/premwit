@@ -1,6 +1,7 @@
 <?php
 
-if(isset($_COOKIE['id'])){
+session_start();
+if(isset($_SESSION['id'])){
     require_once "dbhelper.php";
     $conn = connect_db();
     if(!$conn){
@@ -9,7 +10,7 @@ if(isset($_COOKIE['id'])){
         die();
     }
     $getdata = $conn->prepare("SELECT * FROM user WHERE user = ?");
-    $getdata->bind_param('s',$_COOKIE['id']);
+    $getdata->bind_param('s',$_SESSION['id']);
     $getdata->execute();
     $userdata = $getdata->get_result();
     $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
@@ -18,7 +19,7 @@ if(isset($_COOKIE['id'])){
 else{
     header('Location: index.php');
 }
-$name = $_COOKIE['id'];
+$name = $_SESSION['id'];
 ?>
 
     <!DOCTYPE html>
@@ -51,14 +52,11 @@ $name = $_COOKIE['id'];
 	  
     firebase.initializeApp(config);
     var db = firebase.database();
-    var i=1;
-    var j;
-    db.ref("map/Group "+i).on('value',snap => {
+    db.ref("map/Group "+<?php echo $name; ?>).on('value',snap => {
         var data = snap.val();
-        console.log(data);
         for(j = 1; j<=9; j++){
-            if(data[j]!=false){
-                $("#field"+j).css("background-image","url("+ data[j] +")");
+            if(data[j]!="false"){
+                $("#field"+j).css("background","url("+ data[j] +") center / cover");
             }
             else{
                 $("#field"+j).css("background","#f3c58a");
@@ -69,12 +67,13 @@ $name = $_COOKIE['id'];
     
   </script>
         <style>
+
             .map{
                 background-size: cover;
                 background-position: center;
-                width: 33vw;
+                width: 33.33%;
+                padding-bottom: 33.33%;
                 margin: 0;
-                height: 33vw;
                 background-color: gray;
                 float: left;
             }
@@ -84,6 +83,7 @@ $name = $_COOKIE['id'];
             }
 
             @media(min-width: 600px) {
+
                 .brand-logo {
                     margin-left: 20px;
                     font-size: 2em;
@@ -92,6 +92,7 @@ $name = $_COOKIE['id'];
             }
 
             @media(max-width: 600px) {
+
                 .brand-logo {
                     margin-left: 0px;
                     font-size: 1.5em !important;
@@ -202,21 +203,18 @@ $name = $_COOKIE['id'];
             <?php echo $group ?>
         </div>
         <div id="map" class="tabcontent col s12">
-            <div style="width: 100vw; height: 33vw;">
+            <div id="mapcontainer" style="max-width:640px; padding: 20px; margin: auto;">
                 <div class="map" id="field1"></div>
                 <div class="map" id="field2"></div>
                 <div class="map" id="field3"></div>
-            </div>
-            <div style="width: 100vw; height: 33vw;">
                 <div class="map" id="field4"></div>
                 <div class="map" id="field5"></div>
                 <div class="map" id="field6"></div>
-            </div>
-            <div style="width: 100vw; height: 33vw;">
                 <div class="map" id="field7"></div>
                 <div class="map" id="field8"></div>
-                <div class="map" id="field9"></div>
-            </div>                        
+                <div class="map" id="field9" style="margin-bottom: 100px;"></div>
+            </div>              
+
         </div>
     </body>
     <script>
@@ -225,11 +223,8 @@ $name = $_COOKIE['id'];
                 window.location.replace("logout.php");
             });
             $('.modal').modal();
+            $(".button-collapse").sideNav();
         });
     </script>
-    <footer class="feet">
-        <?php echo "php is working. (c) Pre MWITS 2018 Dev Team " ?>
-
-    </footer>
 
     </html>
