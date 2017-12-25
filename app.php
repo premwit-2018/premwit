@@ -9,7 +9,7 @@ if(isset($_SESSION['id'])){
         close_db($conn);
         die();
     }
-    $getdata = $conn->prepare("SELECT * FROM user WHERE user = ?");
+    $getdata = $conn->prepare("SELECT * FROM user WHERE id = ?");
     $getdata->bind_param('s',$_SESSION['id']);
     $getdata->execute();
     $userdata = $getdata->get_result();
@@ -197,9 +197,9 @@ $name = $_SESSION['id'];
 
         <div id="profile" class="tabcontent col s12">
             <div class="avatar" style="background-image:url(img/man.png)"></div>
-            Name:
+            Group:
             <?php echo $name ?>
-            <br> Group:
+            <br> Name:
             <?php echo $group ?>
         </div>
         <div id="map" class="tabcontent col s12">
@@ -219,7 +219,7 @@ $name = $_SESSION['id'];
     </body>
     <script>
         $(document).ready(function(){
-            $('.logout').click(function () {
+            $('.logout').click(function () {    
                 window.location.replace("logout.php");
             });
             $('.modal').modal();
