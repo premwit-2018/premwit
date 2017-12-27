@@ -204,6 +204,11 @@
 		}
 
 		function stun_boss(seconds) {
+			if(stun != 0)
+			{
+				stun += seconds;
+				return;
+			}
 			stun = seconds;
 			stundur = setInterval(function () {
 				stun_countdown();
@@ -376,6 +381,32 @@
 			}
 		}
 		
+		var balancehits = 0;
+		
+		function balancer(_hit)
+		{
+			if(balancehits != 0)
+			{
+				balancehits += _hits;
+				return;
+			}
+			
+			balancehits = hits;
+			bhit = setInterval(function(){balancer_cd()},100);
+			
+		}
+		
+		function balancer_cd()
+		{
+			balancehits-=1;
+			dmgdiff += 5000;
+			if(balancehits == 0)
+			{
+				clearInterval(bhit);
+			}	
+			
+		}
+		
 		function play()
 		{
 			if(paused)
@@ -430,12 +461,12 @@
 		</li>
 		<li>
 			<div class="collapsible-header">
-				Play / Pause
+				Administrator Tools
 			</div>
 			<div class="collapsible-body">
 				<button class="btn waves-effect waves-light" onclick="play()">CONTINUE GAME</button>
 				<button class="btn waves-effect waves-light" onclick="pause()">PAUSE GAME</button>
-
+				<button class="btn waves-effect waves-light" onclick="balancer(10)">DEAL DAMAGE TO STUDENT, FOR BALANCING OUT</button>
 
 			</div>
 		</li>
