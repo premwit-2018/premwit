@@ -97,6 +97,8 @@
 		var tincrement = 1;
 		var item_13_check = 0;
 		var item_14_check = 0;
+		var paused = false;
+		var time_s = 0;
 
 
 		//			var healthbar = {
@@ -164,7 +166,7 @@
 
 
 		function getdpss() {
-			return ((100 + stdex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time / 50)))) * (1.2 * Math.log(Math.E + (time / 50))) *
+			return ((100 + stdex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time_s / 50)))) * (1.2 * Math.log(Math.E + (time_s / 50))) *
 				(stdamp) + (stdadd)) * stud_tempmod;
 		}
 
@@ -194,6 +196,11 @@
 
 		function timer() {
 			time += tincrement;
+			time_s += 1;
+			if(time<0)
+			{
+				time=0;
+			}
 		}
 
 		function stun_boss(seconds) {
@@ -212,7 +219,13 @@
 		}
 
 		function getbossperc() {
-			return 100 * (wingoal + dmgdiff) / (wingoal * 2);
+			var bperc;
+			bperc =	100 * (wingoal + dmgdiff) / (wingoal * 2);
+			if(bperc<0)
+			{
+				return 0.01;
+			}
+			return bperc;
 		}
 
 		setInterval(function () {
@@ -220,13 +233,13 @@
 		}, 100);
 		//setInterval(function(){console.log("Boss dps ="+getdpsb1())},100);
 		//setInterval(function(){console.log("Student dps ="+getdpss())},100);
-		setInterval(function () {
+		tupdate = setInterval(function () {
 			timer();
 		}, 1000);
-		setInterval(function () {
+		sdps = setInterval(function () {
 			damagetoboss()
 		}, 100);
-		setInterval(function () {
+		bdps = setInterval(function () {
 			damagetostd()
 		}, 100);
 		//setInterval(function(){bosshp.update()},100);
@@ -351,6 +364,35 @@
 		function item_extra_14() {
 			item_14_check = 1;
 		}
+		
+		function pause()
+		{
+			if(!pause)
+			{
+				clearInterval(tupdate);
+				clearInterval(sdps);
+				clearInterval(bdps);
+				paused = true;
+			}
+		}
+		
+		function play()
+		{
+			if(paused)
+			{
+				tupdate = setInterval(function () {
+					timer();
+				}, 1000);
+				sdps = setInterval(function () {
+					damagetoboss()
+				}, 100);
+				bdps = setInterval(function () {
+					damagetostd()
+				}, 100);
+				paused = false;
+			}
+		}
+		
 	</script>
 </head>
 
@@ -384,6 +426,17 @@
 			<div class="collapsible-body">
 				<a class="btn-floating waves-effect waves-light"><i class="material-icons">play_arrow</i></a>
 				<a class="btn-floating waves-effect waves-light"><i class="material-icons">pause</i></a>
+			</div>
+		</li>
+		<li>
+			<div class="collapsible-header">
+				Play / Pause
+			</div>
+			<div class="collapsible-body">
+				<button class="btn waves-effect waves-light" onclick="play()">CONTINUE GAME</button>
+				<button class="btn waves-effect waves-light" onclick="pause()">PAUSE GAME</button>
+
+
 			</div>
 		</li>
 		<li>
