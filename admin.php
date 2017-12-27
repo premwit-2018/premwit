@@ -197,6 +197,10 @@
 		function timer() {
 			time += tincrement;
 			time_s += 1;
+			if(time<0)
+			{
+				time=0;
+			}
 		}
 
 		function stun_boss(seconds) {
@@ -215,7 +219,13 @@
 		}
 
 		function getbossperc() {
-			return 100 * (wingoal + dmgdiff) / (wingoal * 2);
+			var bperc;
+			bperc =	100 * (wingoal + dmgdiff) / (wingoal * 2);
+			if(bperc<0)
+			{
+				return 0.01;
+			}
+			return bperc;
 		}
 
 		setInterval(function () {
