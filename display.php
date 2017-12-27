@@ -54,6 +54,18 @@
 
     		text-align: center;
 		}
+		#boss{
+			position: fixed;
+			height: 400px;
+			width: 400px;
+			background-repeat:no-repeat;
+			background-size: contain;
+			background-position: center;
+			background-image: url("/img/boss.jpg");
+			bottom: 0;
+			left: 50%;
+  			transform: translate(-50%, 0%);
+		}
 	</style>
 </head>
 <body>
@@ -61,6 +73,7 @@
 		<div class="bar"></div>
 	</div>
 	<div class="hp"></div>
+	<div id="boss"></div>
 	<div class="atk">Attacked</div>
 </body>
 <script>
