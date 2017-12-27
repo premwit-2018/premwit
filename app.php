@@ -65,11 +65,24 @@ $name = $_SESSION['id'];
                 }
 
             });
+            var loc = {
+            1:"ใต้หอชายฝั่ง B",
+            2:"ลู่วิ่งหน้าเครื่องบริหารร่างกาย", 
+            3:"ใต้หอชายฝั่ง G",
+            4:"ลู่วิ่งหน้าหอชาย",
+            5:"สนามบาสหน้าห้องสมุด",
+            6:"สนามฟุตบอลฝั่งเปตอง",
+            7:"หน้าห้องผ้า",
+            8:"ใต้เรือนไทย",
+            9:"สนามบาสหน้ามาร์ทมืดเก่า",
+            10:"สวนอาทิตย์",
+            };            
 
             var atk = db.ref("map/Group " + <?php echo $name; ?> + "/order").on('child_added', snap => {
                 console.log("added", snap.val());
                 $('#modal1').modal('open');
                 $("#mcontent").text("ไปฐานที่ " + snap.val());
+                $("#loc").text(loc[snap.val()]);
                 $(".collection").prepend(" <li class='collection-item'>ฐานที่ " + snap.val() + "</li>");
             });
         </script>
@@ -157,6 +170,7 @@ $name = $_SESSION['id'];
         <div id="modal1" class="modal">
             <div class="modal-content">
                 <h4 id="mcontent"></h4>
+                <h5 id="loc"></h5>
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
@@ -263,6 +277,8 @@ $name = $_SESSION['id'];
         $(".help").click(function () {
             $('#modal1').modal('open');
         });
+
+
     </script>
 
     </html>
