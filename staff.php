@@ -1,10 +1,30 @@
 <?php
 session_start();
 if(isset($_SESSION['id'])){
-    if($_SESSION['id'] != 0){
+    require_once "dbhelper.php";
+    $conn = connect_db();
+    if(!$conn){
+        echo "<p> Connection Error </p>";
+        close_db($conn);
+        die();
+    }
+    $getdata = $conn->prepare("SELECT * FROM user WHERE id = ?");
+    $getdata->bind_param('s',$_SESSION['id']);
+    $getdata->execute();
+    $userdata = $getdata->get_result();
+    $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
+
+
+    $getschedule = $conn->prepare("SELECT * FROM `order` WHERE g = ?");
+    $getschedule->bind_param('s',$row['staff']);
+    $getschedule->execute();
+    $schedule = $getschedule->get_result();
+    $schedule = $schedule->fetch_array(MYSQLI_ASSOC);
+
+    if($row['status'] != 'staff'){
         header("location: index.php");
     }
-}
+}   
 else{
     header("location: index.php");
 }
@@ -22,6 +42,7 @@ else{
         <script src="/node_modules/jquery/dist/jquery.js"></script>
         <script src="/node_modules/tether/dist/js/tether.min.js"></script>
         <script src="/node_modules/materialize-css/dist/js/materialize.min.js"></script>
+        <script src="node_modules/js-cookie/src/js.cookie.js"></script>
         <link href="https://fonts.googleapis.com/css?family=Kanit:300,400|Material+Icons" rel="stylesheet">
         <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
         <script>
@@ -37,7 +58,24 @@ else{
 
             firebase.initializeApp(config);
             db = firebase.database();
+
+            function todb(group, value) {
+                var newPostKey = firebase.database().ref('map/Group ' + group + '/order/').push().key;
+                var updates = {};
+                updates['/map/Group ' + group + '/order/' + newPostKey] = value;
+                return firebase.database().ref().update(updates);
+            }
+
+            function clr() {
+                for (i = 1; i <= 20; i++) {
+                    db.ref('map/Group ' + i + '/order/').remove();
+                    for (j = 1; j <= 10; j++) {
+                        db.ref('map/Group ' + i + '/' + j).set("false");
+                    }
+                }
+            }
         </script>
+
         <style>
             @media(min-width: 600px) {
 
@@ -63,6 +101,14 @@ else{
 
             .switch {
                 margin: 20px;
+            }
+
+            .square {
+                width: 100px;
+                height: 100px;
+                vertical-align: center;
+                text-align: center;
+                background: #fafafa;
             }
         </style>
     </head>
@@ -91,88 +137,21 @@ else{
         </div>
         <div>
             <div style="max-width: 500px; margin: auto; padding: 20px;">
-                <div class="input-field col s12">
-                    <select>
-                        <option value="1">Group 1</option>
-                        <option value="2">Group 2</option>
-                        <option value="3">Group 3</option>
-                        <option value="4">Group 4</option>
-                        <option value="5">Group 5</option>
-                        <option value="6">Group 6</option>
-                        <option value="7">Group 7</option>
-                        <option value="8">Group 8</option>
-                        <option value="9">Group 9</option>
-                    </select>
-                    <label>เลือกกลุ่ม</label>
-                </div>
-                <div class="controller" style="height: 300px; overflow: auto;">
-                    <div class="switch">
-                        <label>
-                            Segment 1
-                            <input type="checkbox" id="seg1" value="1">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="switch">
-                        <label>
-                            Segment 2
-                            <input type="checkbox" id="seg2" value="2">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="switch">
-                        <label>
-                            Segment 3
-                            <input type="checkbox" id="seg3" value="3">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="switch">
-                        <label>
-                            Segment 4
-                            <input type="checkbox" id="seg4" value="4">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="switch">
-                        <label>
-                            Segment 5
-                            <input type="checkbox" id="seg5" value="5">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="switch">
-                        <label>
-                            Segment 6
-                            <input type="checkbox" id="seg6" value="6">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="switch">
-                        <label>
-                            Segment 7
-                            <input type="checkbox" id="seg7" value="7">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="switch">
-                        <label>
-                            Segment 8
-                            <input type="checkbox" id="seg8" value="8">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                    <div class="switch">
-                        <label>
-                            Segment 1
-                            <input type="checkbox" id="seg9" value="9">
-                            <span class="lever"></span>
-                        </label>
-                    </div>
-                </div>
+                Staff ประจำฐานที่
+                <?php echo $row['staff'] ?>
                 <br>
-                <button id="save" class="btn waves-effect waves-light" type="submit" name="action">Submit</button>
-            </div>
+                <ul class="collection">
+                    <li class="collection-item" id="period"></li>
+                    <li class="collection-item" id="now"></li>
+                    <li class="collection-item" id="next"></li>
+                </ul>
+                <button class="btn waves-effect waves-light red prev" name="action">
+                    ย้อนกลับ (กดผิด)
+                </button>
+                <button class="btn waves-effect waves-light next" style="float: right;" name="action">
+                    รับกลุ่มต่อไป
+                </button>
+
     </body>
     <script>
         $(document).ready(function () {
@@ -181,52 +160,91 @@ else{
             });
             $('.modal').modal();
             $(".button-collapse").sideNav();
-            $('select').material_select();
-        });
-        $("select").on('change', function () {
-            db.ref("map/Group " + $("select").val()).on('value', snap => {
-                var data = snap.val();
+            var dataset;
+            db.ref("map/Group 0").on('value', snap => {
+                dataset = snap.val();
+                console.log(dataset);
+            });
 
-                var i;
-                for (i = 1; i <= 9; i++) {
-                    if (data[i] != "false") {
-                        $("#seg" + i).prop('checked', true);
-                    } else {
-                        $("#seg" + i).prop('checked', false);
-                    }
+
+
+            var period = 1;
+            console.log(period);
+            var sch = "<?php echo $schedule['staff'] ?>";
+            var schedule = sch.split(",");
+            $("#period").text("คาบที่ : " + period);
+            var key = period - 1;
+            $("#now").text("กลุ่มปัจจุบัน : " + schedule[key] + " , " + (parseInt(schedule[key])+10));
+            $("#next").text("กลุ่มต่อไป : " + schedule[key + 1] + " , " + (parseInt(schedule[key + 1])+10));
+
+            db.ref("map/Group " + schedule[key] + "/sch").on('value', snap => {
+                var stdnow = snap.val();
+                console.log(stdnow);
+                todb(schedule[key], stdnow.split(",")[key]);
+                todb(parseInt(schedule[key])+10, stdnow.split(",")[key]);
+                console.log(schedule[key], stdnow.split(",")[key])
+                db.ref('map/Group ' + schedule[key - 1] + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+                db.ref('map/Group ' + (parseInt(schedule[key - 1])+10) + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+            });
+
+            $(".next").click(function () {
+                period = period + 1;
+                key = key + 1;
+                if (key >= 0 && key < 10) {
+                    $("#now").text("กลุ่มปัจจุบัน : " + schedule[key] + " , " + (parseInt(schedule[key])+10));
+                    $("#next").text("กลุ่มต่อไป : " + schedule[key + 1] + " , " + (parseInt(schedule[key + 1])+10));
+                    $("#period").text("คาบที่ : " + period);
+                    console.log("period", period);
+                    console.log("key", key)
+                    db.ref("map/Group " + schedule[key - 1] + "/sch").on('value', snap => {
+                        stdnow = snap.val();
+                        console.log(stdnow.split(","));
+                        console.log(schedule[key - 1], " go to ", stdnow.split(",")[key]);
+                        todb(schedule[key - 1], stdnow.split(",")[key]);
+                        todb(parseInt(schedule[key - 1])+10, stdnow.split(",")[key]);
+                        db.ref('map/Group ' + schedule[key - 1] + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+                        db.ref('map/Group ' + (parseInt(schedule[key - 1]) + 10) + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+                    });
+
+                    //db.ref('map/Group ' + schedule[key] + '/' + schedule[key + 1]).set(dataset[schedule[key + 1]]); //to firebase               
+                } else if (key < 0) {
+                    key = 0;
+                    period = 1;
+                    console.log("key", key);
+                } else if (key >= 10) {
+                    key = 9;
+                    period = 10;
+                    console.log("key", key);
                 }
             });
-        });
+            $(".prev").click(function () {
+                period = period - 1;
+                key = key - 1;
+                if (key >= 0 && key < 9) {
 
-        var dataset;
-        db.ref("map/Group 0").on('value', snap => {
-            dataset = snap.val();
-        });
+                    console.log("key", key)
+                    $("#now").text("กลุ่มปัจจุบัน : " + schedule[key] + " , " + (parseInt(schedule[key])+10));
+                    $("#next").text("กลุ่มต่อไป : " + schedule[key + 1] + " , " + (parseInt(schedule[key + 1])+10));
+                    $("#period").text("คาบที่ : " + period);
+                    db.ref("map/Group " + schedule[key] + "/sch").on('value', snap => {
+                        stdnow = snap.val();
+                        console.log(stdnow.split(","));
+                        console.log(schedule[key], " go to ", stdnow.split(",")[key + 1]);
+                        //todb(schedule[key],stdnow.split(",")[key+1]);
+                        db.ref('map/Group ' + schedule[key] + '/' + stdnow.split(",")[key + 1]).set("false"); //to firebase
+                        db.ref('map/Group ' + (parseInt(schedule[key]) + 10) + '/' + stdnow.split(",")[key + 1]).set("false"); //to firebase
+                    });
 
-        $("#save").click(function () {
-
-            var json = [];
-            var i;
-            for (i = 1; i <= 9; i++) {
-
-                if ($("#seg" + i).prop('checked')) {
-                    json.push(dataset[i]);
-                } else {
-                    json.push("false");
+                } else if (key < 0) {
+                    key = 0;
+                    period = 1;
+                    console.log("key", key);
+                } else if (key >= 10) {
+                    key = 9;
+                    period = 10;
+                    console.log("key", key);
                 }
-            }
-            db.ref('map/Group ' + $("select").val()).set({
-                1: json[0],
-                2: json[1],
-                3: json[2],
-                4: json[3],
-                5: json[4],
-                6: json[5],
-                7: json[6],
-                8: json[7],
-                9: json[8],
             });
-            Materialize.toast('บันทึกแล้ว', 1000)
         });
     </script>
 
