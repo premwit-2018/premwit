@@ -67,9 +67,10 @@ $name = $_SESSION['id'];
             });
 
             var atk = db.ref("map/Group " + <?php echo $name; ?> + "/order").on('child_added', snap => {
-                console.log("added", snap.val());                
+                console.log("added", snap.val());
                 $('#modal1').modal('open');
-                $("#mcontent").text("ไปฐานที่ "+snap.val());
+                $("#mcontent").text("ไปฐานที่ " + snap.val());
+                $(".collection").prepend(" <li class='collection-item'>ฐานที่ " + snap.val() + "</li>");
             });
         </script>
         <style>
@@ -155,7 +156,7 @@ $name = $_SESSION['id'];
     <body>
         <div id="modal1" class="modal">
             <div class="modal-content">
-            <h4 id="mcontent"></h4>
+                <h4 id="mcontent"></h4>
             </div>
             <div class="modal-footer">
                 <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
@@ -215,20 +216,41 @@ $name = $_SESSION['id'];
             <br> Name:
             <?php echo $group ?>
         </div>
-        <div id="map" class="tabcontent col s12">
-            <div id="mapcontainer" style="max-width:640px; padding: 20px; margin: auto;">
-                <div class="map" id="field1"></div>
-                <div class="map" id="field2"></div>
-                <div class="map" id="field3"></div>
-                <div class="map" id="field4"></div>
-                <div class="map" id="field5"></div>
-                <div class="map" id="field6"></div>
-                <div class="map" id="field7"></div>
-                <div class="map" id="field8"></div>
-                <div class="map" id="field9" style="margin-bottom: 100px;"></div>
+
+        <div id="map" class="col s12">
+            <div class="row" style="padding-top: 70px;">
+                <div class="col s12 ">
+                    <div style="max-width: 640px; padding: 20px; margin:auto;">
+                        <h4>ประวัติการเข้าฐาน</h4>
+                        <ul class="collection" style="max-height: 400px; overflow:auto;">
+
+                        </ul>
+                        <button class="btn waves-effect waves-light help" name="action">
+                            ฐานที่ต้องไป
+                        </button>
+                    </div>
+                </div>
+                <div class="col s12">
+                    <div style="max-width: 640px; margin:auto; padding: 20px;">
+                    <h4>ชิ้นส่วนแผนที่ที่ได้รับ</h4>
+                    <div id="mapcontainer" style="width: 100%;">
+                        <div class="map" id="field1"></div>
+                        <div class="map" id="field2"></div>
+                        <div class="map" id="field3"></div>
+                        <div class="map" id="field4"></div>
+                        <div class="map" id="field5"></div>
+                        <div class="map" id="field6"></div>
+                        <div class="map" id="field7"></div>
+                        <div class="map" id="field8"></div>
+                        <div class="map" id="field9" style="margin-bottom: 20px;"></div>
+                    </div>
+                </div>
+                </div>
             </div>
+        </div>
 
         </div>
+
     </body>
     <script>
         $(document).ready(function () {
@@ -237,6 +259,9 @@ $name = $_SESSION['id'];
             });
             $('.modal').modal();
             $(".button-collapse").sideNav();
+        });
+        $(".help").click(function () {
+            $('#modal1').modal('open');
         });
     </script>
 
