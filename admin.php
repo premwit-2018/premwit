@@ -1,3 +1,28 @@
+<?php
+session_start();
+if(isset($_SESSION['id'])){
+    require_once "dbhelper.php";
+    $conn = connect_db();
+    if(!$conn){
+        echo "<p> Connection Error </p>";
+        close_db($conn);
+        die();
+    }
+    $getdata = $conn->prepare("SELECT * FROM user WHERE id = ?");
+    $getdata->bind_param('s',$_SESSION['id']);
+    $getdata->execute();
+    $userdata = $getdata->get_result();
+    $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
+
+    if($row['status'] != 'admin'){
+        header("location: index.php");
+    }
+}   
+else{
+    header("location: index.php");
+}
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -35,6 +60,8 @@
 			updates['/holdval/' + newPostKey] = "true";
 			return firebase.database().ref().update(updates);
 		}
+
+
 
 		function push() {
 			db.set({
@@ -100,65 +127,16 @@
 		var paused = false;
 		var time_s = 0;
 
-
-		//			var healthbar = {
-		//				canvas : document.createElement("canvas"),
-		//				start : function() {
-		//					this.canvas.width = 480;
-		//					this.canvas.height = 50;
-		//					this.context = this.canvas.getContext("2d");
-		//					document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-		//					bosshp = new component(480,50,"red",-240,0);
-		//				}
-		//
-		//			}
-
-		//			healthbar.start();
-
-		function component(width, height, color, x, y, type) {
-			this.type = type;
-			this.score = 0;
-			this.width = 480;
-			this.height = 50;
-			this.speedX = 0;
-			this.speedY = 0;
-			this.x = x;
-			this.y = y;
-			this.update = function () {
-				ctx = healthbar.context;
-				if (this.type == "text") {
-					ctx.font = this.width + " " + this.height;
-					ctx.fillStyle = color;
-					ctx.fillText(this.text, this.x, this.y);
-				} else {
-					this.x = gethpx();
-					ctx.fillStyle = "#42ff64";
-					ctx.fillRect(0, 0, 480, 50);
-					ctx.fillStyle = color;
-					ctx.fillRect(0, 0, this.x, this.height);
-					//console.log(this.x);
-				}
-
-			}
-		}
-
-		//bosshp.update();
-
 		function bossdmg(damage) {
 			dmgdiff -= damage;
-			//bosshp.update();
-			//console.log(bosshp.x);
 		}
 
 		function studentdmg(damage) {
 			dmgdiff += damage;
-			//bosshp.update();
-			//console.log(bosshp.x);
 		}
 
 		function gethpx() {
 			var x = 480 * (dmgdiff + wingoal) / (wingoal * 2);
-			//console.log("X=")
 			return x;
 		}
 
@@ -236,8 +214,6 @@
 		setInterval(function () {
 			$(".dmgdiff").text(dmgdiff)
 		}, 100);
-		//setInterval(function(){console.log("Boss dps ="+getdpsb1())},100);
-		//setInterval(function(){console.log("Student dps ="+getdpss())},100);
 		tupdate = setInterval(function () {
 			timer();
 		}, 1000);
@@ -247,8 +223,6 @@
 		bdps = setInterval(function () {
 			damagetostd()
 		}, 100);
-		//setInterval(function(){bosshp.update()},100);
-
 
 		setInterval(function () {
 			timer();
@@ -515,6 +489,70 @@
 	</ul>
 	</div>
 	<script>
+		firebase.database().ref('history').on("child_added", function(data){
+			console.log(data.val()["item"]);
+			var id = data.val()['item'];
+			if(id == '901'){
+				manual_atk(500);
+			}
+			else if(id == '902'){
+				manual_atk(10000);
+			}
+			else if(id == '101'){
+				item_main_1();
+			}
+			else if(id == '102'){
+				item_main_2();
+			}
+			else if(id == '103'){
+				item_main_3();
+			}			
+			else if(id == '104'){
+				item_main_4();
+			}
+			else if(id == '201'){
+				item_extra_1();
+			}						
+			else if(id == '202'){
+				item_extra_2();
+			}						
+			else if(id == '203'){
+				item_extra_3();
+			}						
+			else if(id == '204'){
+				item_extra_5();
+			}						
+			else if(id == '205'){
+				item_extra_6();
+			}				
+			else if(id == '206'){
+				item_extra_7();
+			}				
+			else if(id == '207'){
+				item_extra_8();
+			}						
+			else if(id == '208'){
+				item_extra_9();
+			}						
+			else if(id == '209'){
+				item_extra_10();
+			}						
+			else if(id == '210'){
+				item_extra_11();
+			}						
+			else if(id == '211'){
+				item_extra_12();
+			}						
+			else if(id == '212'){
+				item_extra_13();
+			}						
+			else if(id == '213'){
+				item_extra_14();
+			}						
+					
+					
+			
+		});	
         $(document).ready(function () {
             $('.logout').click(function () {
                 window.location.replace("logout.php");
@@ -524,7 +562,6 @@
             $('select').material_select();
         });		
 		function executeQuery() {
-			console.log(dmgdiff);
 			push(dmgdiff);
 			setTimeout(executeQuery, 100);
 		};
