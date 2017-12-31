@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once "dbhelper.php";
 $user = $_POST['username'];
 $password = $_POST['password'];
@@ -16,10 +15,19 @@ $userdata = $getuser->get_result();
 $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
 
 if (password_verify($password, $row['pass'])) {
-	$_SESSION["id"] = $row['id'];
-    echo 'Success redirecting ...';
-    header('Location: app.php');
-    exit();
+    if($row['status'] == 'staff'){
+        session_start();
+        $_SESSION['id'] = $row['id'];
+        header('Location: staff.php');
+        exit();
+    }
+    else{
+        session_start();
+        $_SESSION['id'] = $row['id'];
+        echo 'Success redirecting ...';
+        header('Location: app.php');
+        exit();
+    }
 }
 else{
     echo "wronggg";

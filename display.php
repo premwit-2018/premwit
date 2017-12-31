@@ -28,8 +28,21 @@
 	  var db = firebase.database().ref().child('boss');	
 	</script>
 	<style>
+
 		body{
 			font-family: 'Kanit', sans-serif;
+			background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('/img/bg.jpg') center / cover;
+			background-repeat: no-repeat;
+			height: 100vh;
+			overflow: hidden;
+		}
+
+		#con{
+			position:absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%,-50%);
+			z-index: 99;
 		}
 		.barcontainer{
 			margin-left: auto;
@@ -51,17 +64,35 @@
 		}
 		.hp{
 			padding-top: 8px;
-
+			color: white;
     		text-align: center;
+		}
+		.atk{
+			color: white;
+		}
+		#boss{
+			height: 500px;
+			width: 500px;
+			background-repeat:no-repeat;
+			background-size: contain;
+			background-position: center;
+			background-image: url("/img/boss.png");
 		}
 	</style>
 </head>
 <body>
+<div id="con">
+<div class="atk"><h1>Attacked</h1></div>
+</div>
     <div class="barcontainer">
 		<div class="bar"></div>
 	</div>
 	<div class="hp"></div>
-	<div class="atk">Attacked</div>
+	<div style="margin:auto; width: 500px; transform:translate(-50%,0); height: 500px; left: 50%; position: fixed; bottom:0;">
+		<div id="boss" class="animated pulse infinite"></div>	
+	</div>
+	
+	
 </body>
 <script>
 $.fn.extend({
@@ -79,9 +110,15 @@ $.fn.extend({
 
 var bosshp = db.child('dmgdiff');
 var hpboss = 0; 
-var atk = firebase.database().ref().child('holdval');
+var atk = firebase.database().ref('history');
 atk.on('value',snap => {
-	$(".atk").animateCss('flash');
+	$(".atk").show();
+	$(".barcontainer").animateCss('shake');
+	$(".atk").animateCss('fadeInUp' ,function () {
+		//$(".atk").animateCss('fadeOutDown');
+		$(".atk").fadeOut(200);
+	});
+	$("#boss").animateCss('flash');
 	console.log("attacked");
 });
 bosshp.on('value',snap => {
