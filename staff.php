@@ -65,15 +65,6 @@ else{
                 updates['/map/Group ' + group + '/order/' + newPostKey] = value;
                 return firebase.database().ref().update(updates);
             }
-
-            function clr() {
-                for (i = 1; i <= 20; i++) {
-                    db.ref('map/Group ' + i + '/order/').remove();
-                    for (j = 1; j <= 10; j++) {
-                        db.ref('map/Group ' + i + '/' + j).set("false");
-                    }
-                }
-            }
         </script>
 
         <style>

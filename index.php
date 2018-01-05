@@ -1,10 +1,13 @@
 <!doctype html>
 <html>
 <?php
-  session_start();
-  if(isset($_COOKIE['id'])){
-    header("Location: app.php");
-  }
+    ini_set("default_charset","utf-8");
+    session_start();
+    if(isset($_SESSION['id'])){
+        header("Location: rdr.php");
+    }
+    else{}
+    
 ?>
 <head>
     <meta charset="UTF-8">

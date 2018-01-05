@@ -62,13 +62,26 @@ else{
 					timestamp: firebase.database.ServerValue.TIMESTAMP,
 				});
 			}
-
+			function reset(){
+				db.ref("boss").set({
+				dmgdiff: 0,
+				});
+				db.ref("history").remove();
+			}
 
 			function push() {
 				db.ref("boss").set({
 					dmgdiff: dmgdiff,
 				});
 			}
+            function clr() {
+                for (i = 1; i <= 20; i++) {
+                    db.ref('map/Group ' + i + '/order/').remove();
+                    for (j = 1; j <= 10; j++) {
+                        db.ref('map/Group ' + i + '/' + j).set("false");
+                    }
+                }
+            }			
 		</script>
 		<style>
 			@media(min-width: 600px) {
