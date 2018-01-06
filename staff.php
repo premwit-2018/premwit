@@ -158,46 +158,52 @@ else{
             });
 
 
-
+            var base = <?php echo $row['staff'] ?>;
             var period = 1;
             console.log(period);
-            var sch = "<?php echo $schedule['staff'] ?>";
-            var schedule = sch.split(",");
+            var schedule = <?php print $schedule['staff'] ?>;
+            console.log(schedule);
             $("#period").text("คาบที่ : " + period);
             var key = period - 1;
-            $("#now").text("กลุ่มปัจจุบัน : " + schedule[key] + " , " + (parseInt(schedule[key])+10));
-            $("#next").text("กลุ่มต่อไป : " + schedule[key + 1] + " , " + (parseInt(schedule[key + 1])+10));
+            $("#now").text("กลุ่มปัจจุบัน : " + schedule[key][0] + " , " + schedule[key][1]);
+            $("#next").text("กลุ่มต่อไป : " + schedule[key + 1][0] + " , " + schedule[key + 1][1]);
 
-            db.ref("map/Group " + schedule[key] + "/sch").on('value', snap => {
+            db.ref("map/Group " + schedule[key][0] + "/sch").on('value', snap => {
                 var stdnow = snap.val();
                 console.log(stdnow);
-                todb(schedule[key], stdnow.split(",")[key]);
-                todb(parseInt(schedule[key])+10, stdnow.split(",")[key]);
-                console.log(schedule[key], stdnow.split(",")[key])
-                db.ref('map/Group ' + schedule[key - 1] + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
-                db.ref('map/Group ' + (parseInt(schedule[key - 1])+10) + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+                todb(schedule[key][0], stdnow.split(",")[key]);
+                //db.ref('map/Group ' + schedule[key][0] + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+                //db.ref('map/Group ' + (parseInt(schedule[key - 1])+10) + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
             });
-
+            db.ref("map/Group " + schedule[key][1] + "/sch").on('value', snap => {
+                var stdnow = snap.val();
+                console.log(stdnow);
+                todb(schedule[key][1], stdnow.split(",")[key]);
+                //db.ref('map/Group ' + schedule[key][1] + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+                //db.ref('map/Group ' + (parseInt(schedule[key - 1])+10) + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+            });
             $(".next").click(function () {
                 period = period + 1;
                 key = key + 1;
                 if (key >= 0 && key < 10) {
-                    $("#now").text("กลุ่มปัจจุบัน : " + schedule[key] + " , " + (parseInt(schedule[key])+10));
-                    $("#next").text("กลุ่มต่อไป : " + schedule[key + 1] + " , " + (parseInt(schedule[key + 1])+10));
+                    $("#now").text("กลุ่มปัจจุบัน : " + schedule[key][0] + " , " + schedule[key][1]);
+                    $("#next").text("กลุ่มต่อไป : " + schedule[key + 1][0] + " , " + schedule[key + 1][1]);
                     $("#period").text("คาบที่ : " + period);
                     console.log("period", period);
                     console.log("key", key)
-                    db.ref("map/Group " + schedule[key - 1] + "/sch").on('value', snap => {
-                        stdnow = snap.val();
-                        console.log(stdnow.split(","));
-                        console.log(schedule[key - 1], " go to ", stdnow.split(",")[key]);
-                        todb(schedule[key - 1], stdnow.split(",")[key]);
-                        todb(parseInt(schedule[key - 1])+10, stdnow.split(",")[key]);
-                        db.ref('map/Group ' + schedule[key - 1] + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
-                        db.ref('map/Group ' + (parseInt(schedule[key - 1]) + 10) + '/' + stdnow.split(",")[key]).set(dataset[stdnow.split(",")[key]]); //to firebase
+                    db.ref("map/Group " + schedule[key-1][0] + "/sch").on('value', snap => {
+                        var stdnow = snap.val();
+                        console.log(stdnow);
+                        todb(schedule[key-1][0], stdnow.split(",")[key]);
+                        db.ref('map/Group ' + schedule[key - 1][0] + '/' + base).set(dataset[base]); //to firebase
                     });
-
-                    //db.ref('map/Group ' + schedule[key] + '/' + schedule[key + 1]).set(dataset[schedule[key + 1]]); //to firebase               
+                    db.ref("map/Group " + schedule[key-1][1] + "/sch").on('value', snap => {
+                        var stdnow = snap.val();
+                        console.log(stdnow);
+                        todb(schedule[key-1][1], stdnow.split(",")[key]);
+                        db.ref('map/Group ' + schedule[key - 1][1] + '/' + base).set(dataset[base]); //to firebase
+                    });
+                
                 } else if (key < 0) {
                     key = 0;
                     period = 1;
@@ -214,16 +220,22 @@ else{
                 if (key >= 0 && key < 9) {
 
                     console.log("key", key)
-                    $("#now").text("กลุ่มปัจจุบัน : " + schedule[key] + " , " + (parseInt(schedule[key])+10));
-                    $("#next").text("กลุ่มต่อไป : " + schedule[key + 1] + " , " + (parseInt(schedule[key + 1])+10));
+                    $("#now").text("กลุ่มปัจจุบัน : " + schedule[key][0] + " , " + schedule[key][1]);
+                    $("#next").text("กลุ่มต่อไป : " + schedule[key + 1][0] + " , " + schedule[key + 1][1]);
                     $("#period").text("คาบที่ : " + period);
-                    db.ref("map/Group " + schedule[key] + "/sch").on('value', snap => {
-                        stdnow = snap.val();
-                        console.log(stdnow.split(","));
-                        console.log(schedule[key], " go to ", stdnow.split(",")[key + 1]);
-                        //todb(schedule[key],stdnow.split(",")[key+1]);
-                        db.ref('map/Group ' + schedule[key] + '/' + stdnow.split(",")[key + 1]).set("false"); //to firebase
-                        db.ref('map/Group ' + (parseInt(schedule[key]) + 10) + '/' + stdnow.split(",")[key + 1]).set("false"); //to firebase
+                    db.ref("map/Group " + schedule[key-1][0] + "/sch").on('value', snap => {
+                        var stdnow = snap.val();
+                        console.log(stdnow);
+                        todb(schedule[key-1][0], stdnow.split(",")[key]);
+                        db.ref('map/Group ' + schedule[key - 1][0] + '/' + base).set(dataset[base]); //to firebase
+                        
+                    });
+                    db.ref("map/Group " + schedule[key-1][1] + "/sch").on('value', snap => {
+                        var stdnow = snap.val();
+                        console.log(stdnow);
+                        todb(schedule[key-1][1], stdnow.split(",")[key]);
+                        db.ref('map/Group ' + schedule[key - 1][1] + '/' + base).set(dataset[base]); //to firebase
+                        
                     });
 
                 } else if (key < 0) {

@@ -49,6 +49,9 @@ else{
 			};
 
 			firebase.initializeApp(config);
+			var provider = new firebase.auth.GoogleAuthProvider();
+			provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+
 
 			var db = firebase.database();
 
@@ -62,9 +65,10 @@ else{
 					timestamp: firebase.database.ServerValue.TIMESTAMP,
 				});
 			}
-			function reset(){
+
+			function reset() {
 				db.ref("boss").set({
-				dmgdiff: 0,
+					dmgdiff: 0,
 				});
 				db.ref("history").remove();
 			}
@@ -74,14 +78,15 @@ else{
 					dmgdiff: dmgdiff,
 				});
 			}
-            function clr() {
-                for (i = 1; i <= 20; i++) {
-                    db.ref('map/Group ' + i + '/order/').remove();
-                    for (j = 1; j <= 10; j++) {
-                        db.ref('map/Group ' + i + '/' + j).set("false");
-                    }
-                }
-            }			
+
+			function clr() {
+				for (i = 1; i <= 20; i++) {
+					db.ref('map/Group ' + i + '/order/').remove();
+					for (j = 1; j <= 10; j++) {
+						db.ref('map/Group ' + i + '/' + j).set("false");
+					}
+				}
+			}
 		</script>
 		<style>
 			@media(min-width: 600px) {
@@ -224,9 +229,7 @@ else{
 				return bperc;
 			}
 
-			setInterval(function () {
-				$(".dmgdiff").text(dmgdiff)
-			}, 100);
+
 			tupdate = setInterval(function () {
 				timer();
 			}, 1000);
@@ -444,15 +447,15 @@ else{
 			<ul class="collapsible popout" data-collapsible="accordion">
 				<li>
 					<div class="collapsible-header">dmgdiff:&nbsp;
-						<span class="dmgdiff"></span>
+						<span class="dmgdiff">sign in first</span>
 					</div>
 					<div class="collapsible-body">
-						<a class="btn-floating waves-effect waves-light">
-							<i class="material-icons">play_arrow</i>
-						</a>
-						<a class="btn-floating waves-effect waves-light">
-							<i class="material-icons">pause</i>
-						</a>
+						<button class="btn waves-effect waves-light auth" onclick="firebase.auth().signInWithRedirect(provider);">
+							Auth
+						</button>
+						<button class="red btn waves-effect waves-light out">
+							Sign Out
+						</button>						
 					</div>
 				</li>
 				<li>
@@ -560,6 +563,7 @@ else{
 
 			});
 			$(document).ready(function () {
+				$(".out").hide();
 				$('.logout').click(function () {
 					window.location.replace("logout.php");
 				});
@@ -568,12 +572,6 @@ else{
 				$('select').material_select();
 			});
 
-			function executeQuery() {
-				push(dmgdiff);
-				setTimeout(executeQuery, 100);
-			};
-
-			executeQuery();
 			$("#reset").click(function () {
 				db.ref('history').remove();
 				Materialize.toast('DB has been reset', 4000)
@@ -581,8 +579,45 @@ else{
 			$("#toreset").click(function () {
 				$('#modal1').modal('open');
 			});
+			firebase.auth().getRedirectResult().then(function (result) {
+
+				if (result.credential) {
+					var token = result.credential.accessToken;
+					console.log(token);
+					var user = result.user;
+					$(".auth").hide();
+					$(".out").show();
+					function executeQuery() {
+						push(dmgdiff);
+						setTimeout(executeQuery, 100);
+					};
+					executeQuery();
+					setInterval(function () {
+						$(".dmgdiff").text(dmgdiff)
+					}, 100);
+				}
 
 
+				console.log(user.uid);
+			}).catch(function (error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				// The email of the user's account used.
+				var email = error.email;
+				// The firebase.auth.AuthCredential type that was used.
+				var credential = error.credential;
+				// ...
+			});
+			$(".out").click(function(){
+				firebase.auth().signOut().then(function() {
+				$(".auth").show();
+				$(".out").hide();
+				}).catch(function(error) {
+  				// An error happened.
+				});	
+			})
+		
 		</script>
 
 	</html>
