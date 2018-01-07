@@ -15,23 +15,15 @@ $userdata = $getuser->get_result();
 $row = $userdata->fetch_array(MYSQLI_ASSOC); //all data from db in array sql injection protected
 
 if (password_verify($password, $row['pass'])) {
-    if($row['status'] == 'staff'){
-        session_start();
-        $_SESSION['id'] = $row['id'];
-        header('Location: staff.php');
-        exit();
-    }
-    else{
-        session_start();
-        $_SESSION['id'] = $row['id'];
-        echo 'Success redirecting ...';
-        header('Location: app.php');
-        exit();
-    }
+    session_start();
+    $_SESSION['id'] = $row['id'];
+    header('Location: authen.php');
+    exit();
 }
 else{
     echo "wronggg";
     header('Location: index.php');
+    exit();
 }
 
 ?>

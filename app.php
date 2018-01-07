@@ -55,7 +55,6 @@ $name = $_SESSION['id'];
             db.ref("map/Group " + <?php echo $name; ?>).on('value', snap => {
                 var data = snap.val();
                 console.log(data);
-
                 for (j = 1; j <= 9; j++) {
                     if (data[j] != "false") {
                         $("#field" + j).css("background", "url(" + data[j] + ") center / cover");
@@ -83,6 +82,7 @@ $name = $_SESSION['id'];
                 $('#modal1').modal('open');
                 $("#mcontent").text("ไปฐานที่ " + snap.val());
                 $("#loc").text(loc[snap.val()]);
+                $("#hhh").text(loc[snap.val()]);
                 $(".collection").prepend(" <li class='collection-item'>ฐานที่ " + snap.val() + "</li>");
             });
         </script>
@@ -235,13 +235,8 @@ $name = $_SESSION['id'];
             <div class="row" style="padding-top: 70px;">
                 <div class="col s12 ">
                     <div style="max-width: 640px; padding: 20px; margin:auto;">
-                        <h4>ประวัติการเข้าฐาน</h4>
-                        <ul class="collection" style="max-height: 400px; overflow:auto;">
-
-                        </ul>
-                        <button class="btn waves-effect waves-light help" name="action">
-                            ฐานที่ต้องไป
-                        </button>
+                        <h4>ฐานที่ต้องไป</h4>
+                            <h5 id="hhh">Connecting...</h5>
                     </div>
                 </div>
                 <div class="col s12">

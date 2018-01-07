@@ -125,7 +125,7 @@ bosshp.on('value',snap => {
 	hpboss = 500000 + snap.val();
 	var percent = (hpboss/500000)*100;
 	$(".hp").text(Math.floor(500000*(percent/200)));
-	$(".bar").css("width", percent/2+"%");	
+	$(".bar").css("width", percent/2+"%");
 });
 
 /*
