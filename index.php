@@ -46,5 +46,12 @@
 
 
     </main>
-
+</body>
+<script type="text/javascript">
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js');
+    });
+  }
+</script>
 </html>
