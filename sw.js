@@ -1,45 +1,43 @@
-var EXTRA_FILES = [];
+importScripts("js/sw-toolbox.js")
+importScripts("js/sw-toolbox-cache.js")
 
-var CHECKSUM = "v1";
-
-var FILES = [
+toolbox.precache([
   '/offline.html',
   '/node_modules/materialize-css/dist/css/materialize.min.css',
   '/node_modules/tether/dist/css/tether.min.css',
   '/node_modules/jquery/dist/jquery.js',
   '/node_modules/tether/dist/js/tether.min.js',
   'https://fonts.googleapis.com/css?family=Kanit',
-  'node_modules/frontend/style.css'
-].concat(EXTRA_FILES || []);
+  '/node_modules/frontend/style.css',
+  '/img/logo.png'
+])
 
-var CACHENAME = 'premwits-' + CHECKSUM;
+toolbox.options.debug = true
+toolbox.options.cache.name="premwits-v1";
 
-self.addEventListener('install', function(event) {
-  event.waitUntil(caches.open(CACHENAME).then(function(cache) {
-    return cache.addAll(FILES);
-  }));
-});
+self.addEventListener("install", function install() {
+  self.skipWaiting()
+})
 
-self.addEventListener('activate', function(event) {
-  return event.waitUntil(caches.keys().then(function(keys) {
-    return Promise.all(keys.map(function(k) {
-      if (k != CACHENAME && k.indexOf('premwits-') == 0) {
-        return caches.delete(k);
-      } else {
-        return Promise.resolve();
+self.addEventListener("activate", function activate(e) {
+  e.waitUntil(self.clients.claim())
+})
+
+toolbox.router.get("/(.*)", function get(req, vals, opts) {
+  return toolbox.networkFirst(req, vals, opts)
+    .catch(function(error) {
+      if (req.method === "GET" && req.headers.get("accept").includes("text/html")) {
+        return toolbox.cacheOnly(new Request("/offline.html"), vals, opts)
       }
-    }));
-  }));
-});
+      throw error
+    })
+})
 
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response=>response||fetch(event.request))
-      .catch(() => {
-        if(event.request.mode == 'navigate') {
-          return caches.match('/offline.html');
-        }
-      })
-  );
-});
+toolbox.router.get("/node_modules/materialize-css/dist/css/materialize.min.css", toolbox.cacheFirst)
+toolbox.router.get("/node_modules/tether/dist/css/tether.min.css", toolbox.cacheFirst)
+toolbox.router.get("/node_modules/jquery/dist/jquery.js", toolbox.cacheFirst)
+toolbox.router.get("/node_modules/tether/dist/js/tether.min.js", toolbox.cacheFirst)
+toolbox.router.get("https://fonts.googleapis.com/css?family=Kanit", toolbox.cacheFirst)
+toolbox.router.get("/node_modules/frontend/style.css", toolbox.cacheFirst)
+toolbox.router.get("/img/logo.png", toolbox.cacheFirst)
+toolbox.router.get("/manifest.json", toolbox.fastest)

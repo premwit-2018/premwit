@@ -19,7 +19,17 @@
     <script src="node_modules/tether/dist/js/tether.min.js"></script>
     <script src="node_modules/materialize-css/dist/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
     <link rel="stylesheet" href="node_modules/frontend/style.css">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-title" content="PRE-MWITS 2018"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-touch-icon" href="/img/logo.png"/>
+    <meta name="theme-color" content="#353e48"/>
+    <link rel="icon" href="/img/logo.png"/>
+    <link rel="icon" sizes="192x192" href="/img/logo.png"/>
+    <link rel="shortcut icon" href="/img/logo.png"/>
+    <script src="/js/companion.js" data-service-worker="/sw.js"></script>
     <style>
 
     </style>
@@ -47,11 +57,4 @@
 
     </main>
 </body>
-<script type="text/javascript">
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('sw.js');
-    });
-  }
-</script>
 </html>
