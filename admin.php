@@ -157,21 +157,20 @@ else{
 
 
 
-			function getdpss() {
-				return ((100 + stdex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time_s / 50)))) * (1.2 * Math.log(Math.E + (time_s /
-						50))) *
-					(stdamp) + (stdadd)) * stud_tempmod;
-			}
+		function getdpss() {
+			return ((100 + stdex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time_s / 50)))) * (1.2 * Math.log(Math.E + (time_s / 50))) *
+				(stdamp) + (stdadd)) * stud_tempmod;
+		}
 
-			function getdpsb1() {
-				return (150 + bossex) * (1 + 0.5 * (1 * Math.log(Math.E + (time / 50))) * (1 * Math.log(Math.E + (time / 50))) *
-					Math.log(400 / getbossperc())) * (bossamp);
-			}
+		function getdpsb1() {
+			return (150 + bossex) * (1 + 0.5 * (1 * Math.log(Math.E + (time / 50))) * (1 * Math.log(Math.E + (time / 50))) *
+				Math.log(100 / getbossperc())) * (bossamp);
+		}
 
-			function getdpsb2() {
-				return (275 + bossex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time / 100))) * (1.2 * Math.log(Math.E + (time / 100))) *
-					Math.log(400 / getbossperc())) * (bossamp);
-			}
+		function getdpsb2() {
+			return (300 + bossex) * (1 + 0.5 * (1.0 * Math.log(Math.E + (time / 25))) * (1.0 * Math.log(Math.E + (time / 25))) *
+				Math.log(800 / getbossperc())) * (bossamp);
+		}
 
 
 			function damagetoboss() {

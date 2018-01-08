@@ -16,8 +16,8 @@ jobs:
           name: Hotfix to container
           command: yum install -y ca-certificates curl sudo
       - run:
-          name: Install Required complier
-          command: yum install -y uglifyjs zip unzip git wget tar gcc gcc+ make nodejs
+          name: Install Required Packages
+          command: yum install -y uglifyjs zip unzip git wget tar gcc gcc+ make nodejs npm
       - run:
           name: Install PHP 
           command: |
