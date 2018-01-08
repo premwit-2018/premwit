@@ -156,7 +156,10 @@ else{
 
 
 
-
+		function getdpssdebug() {
+			return ((100 + stdex) * (1 + 0.5 * (1 * Math.log(Math.E + (time_s / 50)))) * (1 * Math.log(Math.E + (time_s / 50))) *
+				(stdamp) + (stdadd)) * stud_tempmod;
+		}
 		function getdpss() {
 			return ((100 + stdex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time_s / 50)))) * (1.2 * Math.log(Math.E + (time_s / 50))) *
 				(stdamp) + (stdadd)) * stud_tempmod;
@@ -174,7 +177,7 @@ else{
 
 
 			function damagetoboss() {
-				dmgdiff -= (getdpss() * 0.1);
+				dmgdiff -= (getdpssdebug() * 0.1);
 			}
 
 			function damagetostd() {
@@ -262,7 +265,7 @@ else{
 			}
 
 			function item_main_4() {
-				dmg = getdpss() * 5;
+				dmg = getdpssdebug() * 5;
 				dmgdiff = dmgdiff - dmg;
 			}
 
@@ -403,11 +406,14 @@ else{
 				}
 			}
 			function reset() {
+	
 				db.ref("boss").set({
 					dmgdiff: 0,
 				});
 				db.ref("history").remove();
 			}
+
+			
 			
 		</script>
 	</head>
@@ -606,7 +612,22 @@ else{
 			tofb('phasechange');
 			bossphase = 2;
 			dmgdiff = 0;
-			
+			wingoal = 500000;
+			dmgdiff = 0;
+			bossex = 1;
+			bossamp = 1;
+			stdex = 1;
+			stdamp = 1;
+			stdadd = 0;
+			boss_tempmod = 1;
+			stud_tempmod = 1;
+			booster_countdown = 0;
+			stun = 0;
+			tincrement = 1;
+			item_13_check = 0;
+			item_14_check = 0;
+			paused = false;
+			time_s = 0;						
 			reset();
 			
 			Materialize.toast('Phase 2 activated', 4000);
