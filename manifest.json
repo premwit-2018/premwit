@@ -1,0 +1,13 @@
+{
+    "short_name": "PRE-MWITS 2018",
+    "name": "PRE-MWITS 2018",
+    "icons": [{
+      "src": "img/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }],
+    "start_url": "/",
+    "background_color": "#353e48",
+    "theme_color": "#353e48",
+    "display": "standalone"
+  }
