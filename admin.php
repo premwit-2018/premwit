@@ -66,12 +66,6 @@ else{
 				});
 			}
 
-			function reset() {
-				db.ref("boss").set({
-					dmgdiff: 0,
-				});
-				db.ref("history").remove();
-			}
 
 			function push() {
 				db.ref("boss").set({
@@ -163,21 +157,20 @@ else{
 
 
 
-			function getdpss() {
-				return ((100 + stdex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time_s / 50)))) * (1.2 * Math.log(Math.E + (time_s /
-						50))) *
-					(stdamp) + (stdadd)) * stud_tempmod;
-			}
+		function getdpss() {
+			return ((100 + stdex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time_s / 50)))) * (1.2 * Math.log(Math.E + (time_s / 50))) *
+				(stdamp) + (stdadd)) * stud_tempmod;
+		}
 
-			function getdpsb1() {
-				return (150 + bossex) * (1 + 0.5 * (1 * Math.log(Math.E + (time / 50))) * (1 * Math.log(Math.E + (time / 50))) *
-					Math.log(400 / getbossperc())) * (bossamp);
-			}
+		function getdpsb1() {
+			return (150 + bossex) * (1 + 0.5 * (1 * Math.log(Math.E + (time / 50))) * (1 * Math.log(Math.E + (time / 50))) *
+				Math.log(100 / getbossperc())) * (bossamp);
+		}
 
-			function getdpsb2() {
-				return (275 + bossex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time / 100))) * (1.2 * Math.log(Math.E + (time / 100))) *
-					Math.log(400 / getbossperc())) * (bossamp);
-			}
+		function getdpsb2() {
+			return (300 + bossex) * (1 + 0.5 * (1.0 * Math.log(Math.E + (time / 25))) * (1.0 * Math.log(Math.E + (time / 25))) *
+				Math.log(800 / getbossperc())) * (bossamp);
+		}
 
 
 			function damagetoboss() {
@@ -241,7 +234,9 @@ else{
 			}, 100);
 
 			setInterval(function () {
-				timer();
+//				timer();
+				$(".time").text(time);
+				console.log(time);
 			}, 1000);
 
 			function manual_atk(dmg) {
@@ -361,7 +356,7 @@ else{
 			}
 
 			function pause() {
-				if (!pause) {
+				if (!paused) {
 					clearInterval(tupdate);
 					clearInterval(sdps);
 					clearInterval(bdps);
@@ -407,6 +402,13 @@ else{
 					paused = false;
 				}
 			}
+			function reset() {
+				db.ref("boss").set({
+					dmgdiff: 0,
+				});
+				db.ref("history").remove();
+			}
+			
 		</script>
 	</head>
 
@@ -448,6 +450,7 @@ else{
 				<li>
 					<div class="collapsible-header">dmgdiff:&nbsp;
 						<span class="dmgdiff">sign in first</span>
+						
 					</div>
 					<div class="collapsible-body">
 						<button class="btn waves-effect waves-light auth" onclick="firebase.auth().signInWithRedirect(provider);">
@@ -455,17 +458,32 @@ else{
 						</button>
 						<button class="red btn waves-effect waves-light out">
 							Sign Out
-						</button>						
+						</button>
 					</div>
 				</li>
+				<li>
+					<div class="collapsible-header" id="console">Console:&nbsp;
+						<span id="phaselog">Phase 1</span>
+					</div>
+					<div class="collapsible-body">
+						<button class="btn blue wave-effect waves-light" id="start" onclick="tofb('run')">Start Game</button>
+						<button class="btn wave-effect waves-light" id="phase">Switch Phase 2</button>
+					</div>
+				</li>
+				<li>
+					<div class="collapsible-header">Time:&nbsp;
+						<span class="time"></span>
+						
+					</div>	
+				</li>				
 				<li>
 					<div class="collapsible-header">
 						Administrator Tools
 					</div>
 					<div class="collapsible-body">
-						<button class="btn waves-effect waves-light" onclick="play()">CONTINUE GAME</button>
-						<button class="btn waves-effect waves-light" onclick="pause()">PAUSE GAME</button>
-						<button class="btn waves-effect waves-light" onclick="balancer(10)">DEAL DAMAGE TO STUDENT, FOR BALANCING OUT</button>
+						<button class="btn waves-effect waves-light" onclick="tofb('001')">CONTINUE GAME</button>
+						<button class="btn waves-effect waves-light" onclick="tofb('002')">PAUSE GAME</button>
+						<button class="btn waves-effect waves-light" onclick="tofb('003')">DEAL DAMAGE TO STUDENT, FOR BALANCING OUT</button>
 						<button class="red btn waves-effect waves-light" id="toreset">Reset DB(Danger!!)</button>
 
 					</div>
@@ -513,111 +531,157 @@ else{
 						<button class="btn waves-effect waves-light" onclick="tofb('213')">MANUAL ATK DPS+0.1</button>
 					</div>
 				</li>
+
 			</ul>
 		</div>
-		<script>
-			firebase.database().ref('history').on("child_added", function (data) {
-				console.log(data.val()["item"]);
-				var id = data.val()['item'];
-				if (id == '901') {
-					manual_atk(500);
-				} else if (id == '902') {
-					manual_atk(10000);
-				} else if (id == '101') {
-					item_main_1();
-				} else if (id == '102') {
-					item_main_2();
-				} else if (id == '103') {
-					item_main_3();
-				} else if (id == '104') {
-					item_main_4();
-				} else if (id == '201') {
-					item_extra_1();
-				} else if (id == '202') {
-					item_extra_2();
-				} else if (id == '203') {
-					item_extra_3();
-				} else if (id == '204') {
-					item_extra_5();
-				} else if (id == '205') {
-					item_extra_6();
-				} else if (id == '206') {
-					item_extra_7();
-				} else if (id == '207') {
-					item_extra_8();
-				} else if (id == '208') {
-					item_extra_9();
-				} else if (id == '209') {
-					item_extra_10();
-				} else if (id == '210') {
-					item_extra_11();
-				} else if (id == '211') {
-					item_extra_12();
-				} else if (id == '212') {
-					item_extra_13();
-				} else if (id == '213') {
-					item_extra_14();
-				}
+	</body>
+	<script>
+		firebase.database().ref('history').on("child_added", function (data) {
+			console.log(data.val()["item"]);
+			var id = data.val()['item'];
+			if (id == '901') {
+				manual_atk(500);
+			} else if (id == '001') {
+				play();
+			} else if (id == '002') {
+				pause();
+			} else if (id == '003') {
+				balancer(10);
+			} else if (id == '902') {
+				manual_atk(10000);
+			} else if (id == '101') {
+				item_main_1();
+			} else if (id == '102') {
+				item_main_2();
+			} else if (id == '103') {
+				item_main_3();
+			} else if (id == '104') {
+				item_main_4();
+			} else if (id == '201') {
+				item_extra_1();
+			} else if (id == '202') {
+				item_extra_2();
+			} else if (id == '203') {
+				item_extra_3();
+			} else if (id == '204') {
+				item_extra_5();
+			} else if (id == '205') {
+				item_extra_6();
+			} else if (id == '206') {
+				item_extra_7();
+			} else if (id == '207') {
+				item_extra_8();
+			} else if (id == '208') {
+				item_extra_9();
+			} else if (id == '209') {
+				item_extra_10();
+			} else if (id == '210') {
+				item_extra_11();
+			} else if (id == '211') {
+				item_extra_12();
+			} else if (id == '212') {
+				item_extra_13();
+			} else if (id == '213') {
+				item_extra_14();
+			}
 
 
 
+		});
+		$(document).ready(function () {
+			pause();
+			$("#phase").hide()
+			$(".out").hide();
+			$('.logout').click(function () {
+				window.location.replace("logout.php");
 			});
-			$(document).ready(function () {
-				$(".out").hide();
-				$('.logout').click(function () {
-					window.location.replace("logout.php");
-				});
-				$('.modal').modal();
-				$(".button-collapse").sideNav();
-				$('select').material_select();
-			});
+			$('.modal').modal();
+			$(".button-collapse").sideNav();
+			$('select').material_select();
+		});
+		$("#phase").click(function () {
+			$("#phase").hide();
+			$("#start").removeClass("disabled");
+			$("#phaselog").text("Phase 2");
+			tofb('phasechange');
+			bossphase = 2;
+			dmgdiff = 0;
+			
+			reset();
+			
+			Materialize.toast('Phase 2 activated', 4000);
+			$("#phase").hide(300);
+		});
+		$("#reset").click(function () {
+			db.ref('history').remove();
+			Materialize.toast('DB has been reset', 4000)
+		});
+		$("#toreset").click(function () {
+			$('#modal1').modal('open');
+		});
+		firebase.auth().getRedirectResult().then(function (result) {
 
-			$("#reset").click(function () {
-				db.ref('history').remove();
-				Materialize.toast('DB has been reset', 4000)
-			});
-			$("#toreset").click(function () {
-				$('#modal1').modal('open');
-			});
-			firebase.auth().getRedirectResult().then(function (result) {
+			if (result.credential) {
+				var token = result.credential.accessToken;
+				console.log(token);
+				var user = result.user;
+				$(".dmgdiff").text("Waiting for start command");
+				Materialize.toast('Signed in waiting to start', 2000);
+				tofb('connected');
+				$(".auth").hide();
+				$(".out").show();
+				reset();
 
-				if (result.credential) {
-					var token = result.credential.accessToken;
-					console.log(token);
-					var user = result.user;
-					$(".auth").hide();
-					$(".out").show();
+				$("#start").click(function () {
+					
+					$("#start").addClass("disabled");
 					function executeQuery() {
 						push(dmgdiff);
 						setTimeout(executeQuery, 100);
 					};
 					executeQuery();
+					play();
 					setInterval(function () {
-						$(".dmgdiff").text(dmgdiff)
+						$(".dmgdiff").text(dmgdiff);
+						if (dmgdiff < -500000) {
+							pause();
+							dmgdiff = -500000;
+							$("#phase").show();
+							tofb("won");
+							clearInterval(this);							
+						}
+						else if(dmgdiff > 500000){
+							pause();
+							dmgdiff = -500000;
+							$("#phase").show();
+							tofb("lost");
+							clearInterval(this);														
+						}
 					}, 100);
-				}
+				});
+
+			}
 
 
-				console.log(user.uid);
-			}).catch(function (error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				// The email of the user's account used.
-				var email = error.email;
-				// The firebase.auth.AuthCredential type that was used.
-				var credential = error.credential;
-				// ...
-			});
-			$(".out").click(function(){
-				firebase.auth().signOut().then(function() {
+			console.log(user.uid);
+		}).catch(function (error) {
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			// The email of the user's account used.
+			var email = error.email;
+			// The firebase.auth.AuthCredential type that was used.
+			var credential = error.credential;
+			// ...
+		});
+		$(".out").click(function () {
+			firebase.auth().signOut().then(function () {
 				$(".auth").show();
 				$(".out").hide();
-				}).catch(function(error) {
-  				// An error happened.
-				});	
-			})
-		
-		</script>
+			}).catch(function (error) {
+				// An error happened.
+			});
+		})
+	</script>
 
 	</html>
