@@ -161,7 +161,7 @@ else{
 				(stdamp) + (stdadd)) * stud_tempmod;
 		}
 		function getdpss() {
-			return ((100 + stdex) * (1 + 0.5 * (1.2 * Math.log(Math.E + (time_s / 50)))) * (1.2 * Math.log(Math.E + (time_s / 50))) *
+			return ((100 + stdex) * (1 + 0.5 * (1.1 * Math.log(Math.E + (time_s / 50)))) * (1.0 * Math.log(Math.E + (time_s / 50))) *
 				(stdamp) + (stdadd)) * stud_tempmod;
 		}
 
