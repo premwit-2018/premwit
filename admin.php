@@ -17,7 +17,7 @@ if(isset($_SESSION['id'])){
     if($row['status'] != 'admin'){
         header("location: index.php");
     }
-}   
+}
 else{
     header("location: index.php");
 }
@@ -177,7 +177,7 @@ else{
 
 
 			function damagetoboss() {
-				dmgdiff -= (getdpssdebug() * 0.1);
+				dmgdiff -= (getdpss() * 0.1);
 			}
 
 			function damagetostd() {
@@ -265,7 +265,7 @@ else{
 			}
 
 			function item_main_4() {
-				dmg = getdpssdebug() * 5;
+				dmg = getdpss() * 5;
 				dmgdiff = dmgdiff - dmg;
 			}
 
@@ -406,15 +406,15 @@ else{
 				}
 			}
 			function reset() {
-	
+
 				db.ref("boss").set({
 					dmgdiff: 0,
 				});
 				db.ref("history").remove();
 			}
 
-			
-			
+
+
 		</script>
 	</head>
 
@@ -456,7 +456,7 @@ else{
 				<li>
 					<div class="collapsible-header">dmgdiff:&nbsp;
 						<span class="dmgdiff">sign in first</span>
-						
+
 					</div>
 					<div class="collapsible-body">
 						<button class="btn waves-effect waves-light auth" onclick="firebase.auth().signInWithRedirect(provider);">
@@ -479,9 +479,9 @@ else{
 				<li>
 					<div class="collapsible-header">Time:&nbsp;
 						<span class="time"></span>
-						
-					</div>	
-				</li>				
+
+					</div>
+				</li>
 				<li>
 					<div class="collapsible-header">
 						Administrator Tools
@@ -627,9 +627,9 @@ else{
 			item_13_check = 0;
 			item_14_check = 0;
 			paused = false;
-			time_s = 0;						
+			time_s = 0;
 			reset();
-			
+
 			Materialize.toast('Phase 2 activated', 4000);
 			$("#phase").hide(300);
 		});
@@ -654,7 +654,7 @@ else{
 				reset();
 
 				$("#start").click(function () {
-					
+
 					$("#start").addClass("disabled");
 					function executeQuery() {
 						push(dmgdiff);
@@ -669,14 +669,14 @@ else{
 							dmgdiff = -500000;
 							$("#phase").show();
 							tofb("won");
-							clearInterval(this);							
+							clearInterval(this);
 						}
 						else if(dmgdiff > 500000){
 							pause();
 							dmgdiff = -500000;
 							$("#phase").show();
 							tofb("lost");
-							clearInterval(this);														
+							clearInterval(this);
 						}
 					}, 100);
 				});
