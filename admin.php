@@ -171,7 +171,7 @@ else{
 		}
 
 		function getdpsb2() {
-			return (300 + bossex) * (1 + 0.5 * (1.0 * Math.log(Math.E + (time / 25))) * (1.0 * Math.log(Math.E + (time / 25))) *
+			return (300 + bossex) * (1 + 0.5 * (1.1 * Math.log(Math.E + (time / 25))) * (1.1 * Math.log(Math.E + (time / 25))) *
 				Math.log(800 / getbossperc())) * (bossamp);
 		}
 
@@ -253,19 +253,19 @@ else{
 			}
 
 			function item_main_1() {
-				stun_boss(5);
+				stun_boss(3);
 			}
 
 			function item_main_2() {
-				stdadd += 10;
+				stdadd += 5;
 			}
 
 			function item_main_3() {
-				stdex += 5;
+				stdex += 4;
 			}
 
 			function item_main_4() {
-				dmg = getdpss() * 5;
+				dmg = getdpss() * 3;
 				dmgdiff = dmgdiff - dmg;
 			}
 
