@@ -82,7 +82,7 @@ $name = $_SESSION['id'];
                 $('#modal1').modal('open');
                 $("#mcontent").text("ไปฐานที่ " + snap.val());
                 $("#loc").text(loc[snap.val()]);
-                $("#hhh").text(loc[snap.val()]);
+                $("#hhh").text("ฐานที่ " +snap.val()+" "+ loc[snap.val()]);
                 $(".collection").prepend(" <li class='collection-item'>ฐานที่ " + snap.val() + "</li>");
             });
         </script>

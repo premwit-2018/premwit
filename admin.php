@@ -261,7 +261,7 @@ else{
 			}
 
 			function item_main_3() {
-				stdex += 20;
+				stdex += 5;
 			}
 
 			function item_main_4() {
